@@ -1,14 +1,9 @@
 <template>
-    <div class="container">
-        <header class="d-flex justify-content-center py-3">
-            <ul class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-            </ul>
-        </header>
+    <div class="flex-container">
+        <p>即時天氣狀況</p>
+        <p>一周天氣預測</p>
+        <p>雨量</p>
+        <p>地震</p>
     </div>
 </template>
 
@@ -18,3 +13,25 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 100px;
+    margin-bottom: 2rem;
+    height: 400px;
+
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) , url('../assets/bg-title.jpg');
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: cover;
+}
+p{
+    color: white;
+    font-size: 25px;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+}
+</style>
