@@ -8,19 +8,19 @@ export default new Vuex.Store({
   state: {
     weatherData: [],
     weatherType:[],
-    location: []
+    location: [],
   },
   getters: {
   },
   mutations: {
     GETWEATHERDATA(state , payload) {
-      state.weatherData = payload
+      state.weatherData = payload;
     },
     GETWEATHERTYPE(state , payload) {
       const type = new Set();
       
       payload.forEach((item) => {
-        type.add(item.weatherElement[20].elementValue)
+        type.add(item.weatherElement[14].elementValue)
       });
       state.weatherType = Array.from(type);
     },
@@ -31,11 +31,11 @@ export default new Vuex.Store({
       })
 
       state.location = Array.from(location)
-    }
+    },
   },
   actions: {
     getWeatherData(context) {
-      const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
+      const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
 
       axios.get(api).then((res) => {
         console.log(res.data.records.location);
@@ -43,7 +43,7 @@ export default new Vuex.Store({
         context.commit('GETWEATHERTYPE' , res.data.records.location)
         context.commit('GETLOCATION' , res.data.records.location)
       })
-    }
+    },
   },
   modules: {
   }

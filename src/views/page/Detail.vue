@@ -11,8 +11,8 @@
                             </p>
                             <hr class="my-3">
                             <p class="card-subtitle">
-                                {{ item.time.obsTime }} <span v-if="item.weatherElement[20].elementValue != -99">{{
-                                    item.weatherElement[20].elementValue
+                                {{ item.time.obsTime }} <span v-if="item.weatherElement[14].elementValue != -99">{{
+                                    item.weatherElement[14].elementValue
                                 }}</span>
                             </p>
                             <div class="row align-items-center">
@@ -42,14 +42,13 @@
 export default {
     computed: {
         weatherData() {
-            return this.$store.state.weatherData
+            return this.$store.state.filterWeatherData
         }
-    }
-
+    },
 }
 </script>
 
-<style>
+<style scoped>
 body {
     font-family: 'Noto Sans SC', sans-serif;
 }
