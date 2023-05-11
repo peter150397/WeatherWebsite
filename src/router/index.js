@@ -10,9 +10,9 @@ const routes = [
     component: () => import('../views/Dashboard.vue'),
     children: [
       {
-        path: '',
-        name: 'Home',
-        component: () => import('../views/page/Home.vue'),
+        path: '/currentWeather',
+        name: 'currentWeather',
+        component: () => import('../views/page/currentWeather.vue'),
       },
     ]
   },
