@@ -2,6 +2,14 @@
     <div>
         <div class="flex-box">
             <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud4">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud5">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud6">
+            <img src="@/assets/bg-clouds/background-cloud-2.png" alt="bg-clouds" class="bg-clouds cloud7">
+            <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8">
             <button class="location Keelung" @click="selectLocation = '基隆市';">
                 <p>基隆市</p>
             </button>
@@ -70,8 +78,8 @@
                 <p>連江縣</p>
             </button>
         </div>
-        <div class="table-bg">
-            <div class="table-div" v-if="selectLocation">
+        <div class="table-bg" v-if="selectLocation">
+            <div class="table-div">
                 <select v-model="selectFilterLocation">
                     <option value="">全部地區</option>
                     <option :value="item" v-for="item in filterLocations" :key="item">{{ item }}</option>
@@ -107,7 +115,7 @@
                                     class="weatherImg"></td>
                         </tr>
                     </tbody>
-                    
+
                 </table>
             </div>
         </div>
@@ -125,7 +133,6 @@ import raining from "@/assets/weather/raining.png";
 import storm from "@/assets/weather/storm.png";
 import sun from "@/assets/weather/sun.png";
 import wind from "@/assets/weather/wind.png";
-
 
 export default {
     data() {
@@ -218,16 +225,16 @@ export default {
                 }
             })
             vm.showingData = vm.filterData;
-            
+
             const location = new Set();
-            vm.filterData.forEach((item)=> {
+            vm.filterData.forEach((item) => {
                 location.add(item.parameter[2].parameterValue);
             })
             vm.filterLocations = Array.from(location);
 
             setTimeout(() => {
                 $("html").animate({
-                    scrollTop: 1144
+                    scrollTop: 944
                 }, 0)
             }, 10);
         },
@@ -235,17 +242,17 @@ export default {
             const vm = this;
             vm.filterDataByLocation = [];
 
-            vm.filterData.forEach((item)=> {
-                if(item.parameter[2].parameterValue == vm.selectFilterLocation) {
+            vm.filterData.forEach((item) => {
+                if (item.parameter[2].parameterValue == vm.selectFilterLocation) {
                     vm.filterDataByLocation.push(item)
                 }
             })
-            if(vm.selectFilterLocation) {
+            if (vm.selectFilterLocation) {
                 vm.showingData = vm.filterDataByLocation;
-            }else{
+            } else {
                 vm.showingData = vm.filterData;
             }
-            
+
 
         }
     },
@@ -310,10 +317,12 @@ export default {
     position: relative;
     padding: 2rem 0;
     background-color: #B0DAFF;
+    overflow: hidden;
 }
 
 .Taiwan-img {
     height: 680px;
+    z-index: 2;
 }
 
 .location {
@@ -325,6 +334,7 @@ export default {
     color: #146C94;
     background-color: transparent;
     box-shadow: 2px 2px 2px rgb(94, 94, 94);
+    z-index: 2;
 
     text-align: center;
 
@@ -334,6 +344,62 @@ export default {
 .location:hover {
     background-color: #146C94;
     color: #B0DAFF;
+}
+
+.bg-clouds {
+    position: absolute;
+    z-index: 1;
+    height: 600px;
+}
+
+.cloud1 {
+    bottom: -200px;
+    left: -200px;
+    opacity: 50%;
+}
+
+.cloud2 {
+    bottom: -120px;
+    right: -300px;
+    opacity: 50%;
+}
+
+.cloud3 {
+    bottom: 20px;
+    left: -300px;
+    opacity: 30%;
+}
+
+.cloud4 {
+    bottom: 80px;
+    right: -400px;
+    opacity: 30%;
+}
+
+.cloud5 {
+    bottom: 200px;
+    left: -400px;
+    opacity: 20%;
+}
+
+.cloud6 {
+    bottom: 300px;
+    right: -500px;
+    opacity: 20%;
+}
+
+.cloud7 {
+    height: 150px;
+    left: 500px;
+    top: 70px;
+    opacity: 50%;
+}
+
+.cloud8 {
+    height: 150px;
+    right: 400px;
+    top: 10px;
+    opacity: 50%;
 }
 
 .Keelung {
@@ -449,7 +515,9 @@ export default {
 
 .table-bg {
     background-color: #B0DAFF;
+    position: relative;
     padding: 3rem 17%;
+    z-index: 2;
 }
 
 .table-div {
@@ -471,7 +539,8 @@ table {
     margin: 0 auto;
     border-collapse: collapse;
 }
-select{
+
+select {
     text-align: center;
     margin: 1rem 25%;
     width: 50%;
@@ -491,5 +560,4 @@ td {
 p {
     margin: 0;
     font-weight: bold;
-}
-</style>
+}</style>
