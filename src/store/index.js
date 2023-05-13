@@ -6,44 +6,45 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    weatherData: [],
-    weatherType:[],
-    location: [],
+    currentWeatherData: [],
+    thirtySixHrWeatherForecastData: [],
+    locationArray: [],
   },
   getters: {
   },
   mutations: {
-    GETWEATHERDATA(state , payload) {
-      state.weatherData = payload;
+    GETCURRENTWEATHERDATA(state , payload) {
+      state.currentWeatherData = payload;
     },
-    GETWEATHERTYPE(state , payload) {
-      const type = new Set();
-      
-      payload.forEach((item) => {
-        type.add(item.weatherElement[14].elementValue)
-      });
-      state.weatherType = Array.from(type);
+    GET36HRWEATHERFORECASTDATA(state , payload) {
+      state.thirtySixHrWeatherForecastData = payload
     },
     GETLOCATION(state , payload) {
-      const location = new Set()
-      payload.forEach((item)=>{
-        location.add(item.parameter[0].parameterValue)
-      })
-
-      state.location = Array.from(location)
-    },
+      const location = new Set();
+      payload.forEach(item => {
+        location.add(item.locationName)
+      });
+      state.locationArray = Array.from(location)
+    }
   },
   actions: {
-    getWeatherData(context) {
+    getCurrentWeatherData(context) {
       const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
 
       axios.get(api).then((res) => {
         console.log(res.data.records.location);
-        context.commit('GETWEATHERDATA' , res.data.records.location)
-        context.commit('GETWEATHERTYPE' , res.data.records.location)
-        context.commit('GETLOCATION' , res.data.records.location)
+        context.commit('GETCURRENTWEATHERDATA' , res.data.records.location)
       })
     },
+    get36hrWeatherForecastData(context) {
+      const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
+
+      axios.get(api).then((res) => {
+        console.log(res.data.records.location);
+        context.commit('GET36HRWEATHERFORECASTDATA' , res.data.records.location)
+        context.commit('GETLOCATION' , res.data.records.location)
+      })
+    }
   },
   modules: {
   }

@@ -219,7 +219,7 @@ export default {
             vm.filterData = [];
             vm.filterLocations = [];
 
-            vm.$store.state.weatherData.forEach((item) => {
+            vm.$store.state.currentWeatherData.forEach((item) => {
                 if (vm.selectLocation == item.parameter[0].parameterValue) {
                     vm.filterData.push(item)
                 }
@@ -521,7 +521,7 @@ export default {
 }
 
 .table-div {
-    background-color: white;
+    background: linear-gradient(#FEFF86 , #fff);
     border-radius: 20px;
     padding: 2rem;
 }

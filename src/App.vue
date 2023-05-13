@@ -7,7 +7,8 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch("getWeatherData")
+    this.$store.dispatch("getCurrentWeatherData")
+    this.$store.dispatch("get36hrWeatherForecastData")
   }
 
 
