@@ -8,7 +8,31 @@ export default new Vuex.Store({
   state: {
     currentWeatherData: [],
     thirtySixHrWeatherForecastData: [],
-    locationArray: [],
+    WeeklyWeatherForecastData:[],
+    locationArray: [
+      "基隆市",
+      "臺北市",
+      "新北市",
+      "桃園市",
+      "新竹縣",
+      "新竹市",
+      "苗栗縣",
+      "臺中市",
+      "南投縣",
+      "彰化縣",
+      "雲林縣",
+      "嘉義縣",
+      "嘉義市",
+      "臺南市",
+      "高雄市",
+      "屏東縣",
+      "臺東縣",
+      "花蓮縣",
+      "宜蘭縣",
+      "連江縣",
+      "金門縣",
+      "澎湖縣",
+    ],
   },
   getters: {
   },
@@ -19,12 +43,8 @@ export default new Vuex.Store({
     GET36HRWEATHERFORECASTDATA(state , payload) {
       state.thirtySixHrWeatherForecastData = payload
     },
-    GETLOCATION(state , payload) {
-      const location = new Set();
-      payload.forEach(item => {
-        location.add(item.locationName)
-      });
-      state.locationArray = Array.from(location)
+    GETWEEKLYWEATHERFORECASTDATA(state , payload) {
+      state.WeeklyWeatherForecastData = payload
     }
   },
   actions: {
@@ -32,7 +52,8 @@ export default new Vuex.Store({
       const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
 
       axios.get(api).then((res) => {
-        console.log(res.data.records.location);
+        console.log("this is vuex action getCurrentWeatherData");
+        // console.log(res.data.records.location);
         context.commit('GETCURRENTWEATHERDATA' , res.data.records.location)
       })
     },
@@ -40,9 +61,18 @@ export default new Vuex.Store({
       const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
 
       axios.get(api).then((res) => {
-        console.log(res.data.records.location);
+        console.log("this is vuex action get36hrWeatherForecastData");
+        // console.log(res.data.records.location);
         context.commit('GET36HRWEATHERFORECASTDATA' , res.data.records.location)
-        context.commit('GETLOCATION' , res.data.records.location)
+      })
+    },
+    getWeeklyWeatherForecastData(context) {
+      const api = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=CWB-3586EDC3-F42A-4048-89F6-54F977C6DAD2`
+
+      axios.get(api).then((res) => {
+        console.log("this is vuex action getWeeklyWeatherForecastData");
+        // console.log(res.data.records.locations[0].location);
+        context.commit('GETWEEKLYWEATHERFORECASTDATA' , res.data.records.locations[0].location)
       })
     }
   },

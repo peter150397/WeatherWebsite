@@ -128,8 +128,10 @@ import $ from "jquery";
 import cloud from "@/assets/weather/cloud.png";
 import clouds from "@/assets/weather/clouds.png";
 import cloudyDay from "@/assets/weather/cloudy-day.png";
+import fog from "@/assets/weather/fog.png";
 import rainDrops from "@/assets/weather/rain-drops.png";
 import raining from "@/assets/weather/raining.png";
+import snowing from "@/assets/weather/snowing.png";
 import storm from "@/assets/weather/storm.png";
 import sun from "@/assets/weather/sun.png";
 import wind from "@/assets/weather/wind.png";
@@ -150,8 +152,10 @@ export default {
                 cloud: cloud,
                 clouds: clouds,
                 cloudyDay: cloudyDay,
+                fog: fog,
                 rainDrops: rainDrops,
                 raining: raining,
+                snowing: snowing,
                 storm: storm,
                 sun: sun,
                 wind: wind,
