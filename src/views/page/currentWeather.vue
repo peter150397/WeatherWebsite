@@ -148,6 +148,8 @@ export default {
 
             showingData: [],
 
+            weatherType:[],
+
             weatherImg: {
                 cloud: cloud,
                 clouds: clouds,
@@ -164,23 +166,39 @@ export default {
     },
     methods: {
         weatherImgSwitch(event) {
-            switch (event) {
-                case "陰":
-                    return this.weatherImg.cloud;
-                    break;
-                case "多雲":
-                    return this.weatherImg.clouds;
-                    break;
-                case "晴":
-                    return this.weatherImg.sun;
-                    break;
-                case "陰有雨":
-                    return this.weatherImg.raining;
-                    break;
-                case "-99":
-                    return;
-                    break;
+            if(event == "陰") {
+                return this.weatherImg.cloud;
+            }else if(event == "多雲") {
+                return this.weatherImg.clouds;
+            }else if(event == "晴") {
+                return this.weatherImg.sun;
+            }else if(event == "陰有雨" || event == "多雲有雨") {
+                return this.weatherImg.raining
+            }else if(event == "陰有雷" || event == "多雲有雷") {
+                return this.weatherImg.storm
+            }else if(event == -99) {
+                return
             }
+            // switch (event) {
+            //     case "陰":
+            //         return this.weatherImg.cloud;
+            //         break;
+            //     case "多雲":
+            //         return this.weatherImg.clouds;
+            //         break;
+            //     case "晴":
+            //         return this.weatherImg.sun;
+            //         break;
+            //     case "陰有雨":
+            //         return this.weatherImg.raining;
+            //         break;
+            //     case "陰有雷":
+            //         return this.weatherImg.storm;
+            //         break;
+            //     case "-99":
+            //         return;
+            //         break;
+            // }
         },
         getDate() {
             const date = new Date()
@@ -235,6 +253,12 @@ export default {
                 location.add(item.parameter[2].parameterValue);
             })
             vm.filterLocations = Array.from(location);
+
+            const weatherType = new Set();
+            vm.filterData.forEach((item) => {
+                weatherType.add(item.weatherElement[14].elementValue);
+            })
+            vm.weatherType = Array.from(weatherType);
 
             setTimeout(() => {
                 $("html").animate({
