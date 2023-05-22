@@ -1,82 +1,27 @@
 <template>
     <div>
         <div class="flex-box">
-            <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
-            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1">
-            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2">
-            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3">
-            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud4">
-            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud5">
-            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud6">
-            <img src="@/assets/bg-clouds/background-cloud-2.png" alt="bg-clouds" class="bg-clouds cloud7">
-            <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8">
-            <button class="location Keelung" @click="selectLocation = '基隆市';">
-                <p>基隆市</p>
-            </button>
+            <div>
+                <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
 
-            <button class="location Taipei" @click="selectLocation = '臺北市';">
-                <p>臺北市</p>
-            </button>
-            <button class="location NewTaipei" @click="selectLocation = '新北市'">
-                <p>新北市</p>
-            </button>
-            <button class="location Taoyuan" @click="selectLocation = '桃園市';">
-                <p>桃園市</p>
-            </button>
-            <button class="location HsinchuCity" @click="selectLocation = '新竹市';">
-                <p>新竹市</p>
-            </button>
-            <button class="location HsinchuCountry" @click="selectLocation = '新竹縣';">
-                <p>新竹縣</p>
-            </button>
-            <button class="location Miaoli" @click="selectLocation = '苗栗縣';">
-                <p>苗栗縣</p>
-            </button>
-            <button class="location Taichung" @click="selectLocation = '臺中市';">
-                <p>臺中市</p>
-            </button>
-            <button class="location Nantou" @click="selectLocation = '南投縣';">
-                <p>南投縣</p>
-            </button>
-            <button class="location Changhua" @click="selectLocation = '彰化縣';">
-                <p>彰化縣</p>
-            </button>
-            <button class="location Yunlin" @click="selectLocation = '雲林縣';">
-                <p>雲林縣</p>
-            </button>
-            <button class="location ChiayiCity" @click="selectLocation = '嘉義市';">
-                <p>嘉義市</p>
-            </button>
-            <button class="location ChiayiCountry" @click="selectLocation = '嘉義縣';">
-                <p>嘉義縣</p>
-            </button>
-            <button class="location Tainan" @click="selectLocation = '臺南市';">
-                <p>臺南市</p>
-            </button>
-            <button class="location Kaohsiung" @click="selectLocation = '高雄市';">
-                <p>高雄市</p>
-            </button>
-            <button class="location Pingtung" @click="selectLocation = '屏東縣';">
-                <p>屏東縣</p>
-            </button>
-            <button class="location Taitung" @click="selectLocation = '臺東縣';">
-                <p>臺東縣</p>
-            </button>
-            <button class="location Hualien" @click="selectLocation = '花蓮縣';">
-                <p>花蓮縣</p>
-            </button>
-            <button class="location Yilan" @click="selectLocation = '宜蘭縣';">
-                <p>宜蘭縣</p>
-            </button>
-            <button class="location Penghu" @click="selectLocation = '澎湖縣';">
-                <p>澎湖縣</p>
-            </button>
-            <button class="location Kinmen" @click="selectLocation = '金門縣';">
-                <p>金門縣</p>
-            </button>
-            <button class="location Lianjiang" @click="selectLocation = '連江縣';">
-                <p>連江縣</p>
-            </button>
+                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1 left">
+                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2 right">
+                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3 left">
+                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud4 right">
+                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud5 left">
+                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud6 right">
+                <img src="@/assets/bg-clouds/background-cloud-2.png" alt="bg-clouds" class="bg-clouds cloud7 left">
+                <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8 right">
+            </div>
+            <div class="buttonGroup">
+                <button class="location" @click="changeLocation(item.locationName)" v-for="item in currentWeatherAlert"
+                    :key="item.geocode" :class="filterPositionOfLocationButton(item.locationName)">
+                    <img src="@/assets/weatherIcon/waring.png" alt="" class="waringIcon" :title="`${item.hazardConditions.hazards[0].info.significance} : ${item.hazardConditions.hazards[0].info.phenomena}`"
+                        v-if="currentWeatherAlertLocation.indexOf(item.locationName) != -1">
+                    <p>{{ item.locationName }}</p>
+                </button>
+            </div>
+
         </div>
         <div class="table-bg" v-if="selectLocation">
             <div class="table-div">
@@ -112,10 +57,9 @@
                                 item.weatherElement[1].elementValue | WDIRfilter }}</td>
                             <td v-if="item.weatherElement[14].elementValue == -99">無資料</td>
                             <td v-else><img :src="weatherImgSwitch(item.weatherElement[14].elementValue)" alt="weatherImg"
-                                    class="weatherImg"></td>
+                                    class="weatherImg" :title="item.weatherElement[14].elementValue"></td>
                         </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -148,8 +92,6 @@ export default {
 
             showingData: [],
 
-            weatherType:[],
-
             weatherImg: {
                 cloud: cloud,
                 clouds: clouds,
@@ -164,47 +106,37 @@ export default {
             }
         }
     },
+    computed: {
+        currentWeatherAlertLocation() {
+            return this.$store.state.currentWeatherAlertLocation
+        },
+        currentWeatherAlert() {
+            return this.$store.state.currentWeatherAlert
+        },
+    },
     methods: {
         weatherImgSwitch(event) {
-            if(event == "陰") {
+            if (event == "陰") {
                 return this.weatherImg.cloud;
-            }else if(event == "多雲") {
+            } else if (event == "多雲") {
                 return this.weatherImg.clouds;
-            }else if(event == "晴") {
+            } else if (event == "晴") {
                 return this.weatherImg.sun;
-            }else if(event == "陰有雨" || event == "多雲有雨") {
+            } else if (event == "陰有雨" || event == "多雲有雨") {
                 return this.weatherImg.raining
-            }else if(event == "陰有雷" || event == "多雲有雷") {
+            } else if (event == "陰有雷" || event == "多雲有雷" || event == "陰有雷雨") {
                 return this.weatherImg.storm
-            }else if(event == -99) {
+            } else if (event == -99) {
                 return
             }
-            // switch (event) {
-            //     case "陰":
-            //         return this.weatherImg.cloud;
-            //         break;
-            //     case "多雲":
-            //         return this.weatherImg.clouds;
-            //         break;
-            //     case "晴":
-            //         return this.weatherImg.sun;
-            //         break;
-            //     case "陰有雨":
-            //         return this.weatherImg.raining;
-            //         break;
-            //     case "陰有雷":
-            //         return this.weatherImg.storm;
-            //         break;
-            //     case "-99":
-            //         return;
-            //         break;
-            // }
         },
         getDate() {
             const date = new Date()
             let months = date.getMonth() + 1
             let days = date.getDate()
             let week = date.getDay()
+
+            console.log(week);
 
             let chinessNum = function () {
                 switch (week) {
@@ -226,13 +158,86 @@ export default {
                     case 6:
                         return "六"
                         break;
-                    case 7:
+                    case 0:
                         return "日"
                         break;
                 }
             }
 
             return `${months}月${days}日 星期${chinessNum()}`
+        },
+        filterPositionOfLocationButton(location) {
+            switch (location) {
+                case "基隆市":
+                    return 'Keelung'
+                    break;
+                case "臺北市":
+                    return 'Taipei'
+                    break;
+                case "新北市":
+                    return 'NewTaipei'
+                    break;
+                case "桃園市":
+                    return 'Taoyuan'
+                    break;
+                case "新竹市":
+                    return 'HsinchuCity'
+                    break;
+                case "新竹縣":
+                    return 'HsinchuCountry'
+                    break;
+                case "苗栗縣":
+                    return 'Miaoli'
+                    break;
+                case "臺中市":
+                    return 'Taichung'
+                    break;
+                case "南投縣":
+                    return 'Nantou'
+                    break;
+                case "彰化縣":
+                    return 'Changhua'
+                    break;
+                case "雲林縣":
+                    return 'Yunlin'
+                    break;
+                case "嘉義市":
+                    return 'ChiayiCity'
+                    break;
+                case "嘉義縣":
+                    return 'ChiayiCountry'
+                    break;
+                case "臺南市":
+                    return 'Tainan'
+                    break;
+                case "高雄市":
+                    return 'Kaohsiung'
+                    break;
+                case "屏東縣":
+                    return 'Pingtung'
+                    break;
+                case "臺東縣":
+                    return 'Taitung'
+                    break;
+                case "花蓮縣":
+                    return 'Hualien'
+                    break;
+                case "宜蘭縣":
+                    return 'Yilan'
+                    break;
+                case "澎湖縣":
+                    return 'Penghu'
+                    break;
+                case "金門縣":
+                    return 'Kinmen'
+                    break;
+                case "連江縣":
+                    return 'Lianjiang'
+                    break;
+            }
+        },
+        changeLocation(location) {
+            this.selectLocation = location
         }
     },
     watch: {
@@ -254,12 +259,6 @@ export default {
             })
             vm.filterLocations = Array.from(location);
 
-            const weatherType = new Set();
-            vm.filterData.forEach((item) => {
-                weatherType.add(item.weatherElement[14].elementValue);
-            })
-            vm.weatherType = Array.from(weatherType);
-
             setTimeout(() => {
                 $("html").animate({
                     scrollTop: 944
@@ -280,9 +279,8 @@ export default {
             } else {
                 vm.showingData = vm.filterData;
             }
+        },
 
-
-        }
     },
     filters: {
         TEMPfilter(e) {
@@ -335,10 +333,23 @@ export default {
             return e.slice(11)
         }
     },
+    mounted() {
+        $(".left").animate({
+            left: "+=150px"
+        }, 2000)
+        $(".right").animate({
+            right: "+=150px"
+        }, 2000)
+    }
 }
 </script>
 
 <style scoped>
+p ,h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    font-family: '微軟正黑體';
+}
+
 .flex-box {
     display: flex;
     justify-content: center;
@@ -349,6 +360,7 @@ export default {
 }
 
 .Taiwan-img {
+    position: relative;
     height: 680px;
     z-index: 2;
 }
@@ -356,76 +368,79 @@ export default {
 .location {
     position: absolute;
 
-    width: 70px;
+    width: 90px;
     border-radius: 8px;
     border: solid 2px #146C94;
     color: #146C94;
     background-color: transparent;
-    box-shadow: 2px 2px 2px rgb(94, 94, 94);
     z-index: 2;
 
-    text-align: center;
-
-    transition-duration: 0.1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .location:hover {
     background-color: #146C94;
     color: #B0DAFF;
+    transition-duration: 0.1s;
+}
+
+.waringIcon {
+    height: 24px;
 }
 
 .bg-clouds {
     position: absolute;
-    z-index: 1;
     height: 600px;
 }
 
 .cloud1 {
     bottom: -200px;
-    left: -200px;
+    left: -350px;
     opacity: 50%;
 }
 
 .cloud2 {
     bottom: -120px;
-    right: -300px;
+    right: -450px;
     opacity: 50%;
 }
 
 .cloud3 {
     bottom: 20px;
-    left: -300px;
+    left: -450px;
     opacity: 30%;
 }
 
 .cloud4 {
     bottom: 80px;
-    right: -400px;
+    right: -550px;
     opacity: 30%;
 }
 
 .cloud5 {
     bottom: 200px;
-    left: -400px;
+    left: -550px;
     opacity: 20%;
 }
 
 .cloud6 {
     bottom: 300px;
-    right: -500px;
+    right: -650px;
     opacity: 20%;
 }
 
 .cloud7 {
     height: 150px;
-    left: 500px;
+    left: 350px;
     top: 70px;
     opacity: 50%;
 }
 
 .cloud8 {
     height: 150px;
-    right: 400px;
+    right: 250px;
     top: 10px;
     opacity: 50%;
 }
@@ -542,14 +557,13 @@ export default {
 
 
 .table-bg {
-    background-color: #B0DAFF;
+    background:  linear-gradient(#B0DAFF, #FEFF86);
     position: relative;
-    padding: 3rem 17%;
-    z-index: 2;
+    padding: 3rem 20%;
 }
 
 .table-div {
-    background: linear-gradient(#FEFF86 , #fff);
+    background: linear-gradient(#FEFF86, #B0DAFF);
     border-radius: 20px;
     padding: 2rem;
 }
@@ -559,8 +573,8 @@ export default {
 }
 
 .missingData {
-    color: red;
-    font-weight: bold;
+    color: rgb(255, 60, 0);
+    font-weight: bolder;
 }
 
 table {
@@ -572,20 +586,21 @@ select {
     text-align: center;
     margin: 1rem 25%;
     width: 50%;
+    padding: 0.5rem 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #146C94;
+    color: white;
 }
 
 th,
 td {
     padding: 0.8rem;
-    border-bottom: solid 2px #B0DAFF;
+    border-bottom: solid 3px #146C94;
     text-align: center;
     letter-spacing: 1px;
 
     min-width: 80px;
     min-height: 60px;
 }
-
-p {
-    margin: 0;
-    font-weight: bold;
-}</style>
+</style>

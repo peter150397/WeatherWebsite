@@ -1,10 +1,10 @@
 <template>
     <div class="flex-container">
-        <router-link to="/currentWeather"><p>即時天氣狀況</p></router-link>
+        <router-link to="/currentweather"><p>即時天氣狀況</p></router-link>
         <p>|</p>
         <router-link to="/weatherforecast"><p>一周天氣預測</p></router-link>
         <p>|</p>
-        <router-link to="/"><p>雨量</p></router-link>
+        <router-link to="/earthquake"><p>近期地震資訊</p></router-link>
         <p>|</p>
         <router-link to="/"><p>地震</p></router-link>
     </div>

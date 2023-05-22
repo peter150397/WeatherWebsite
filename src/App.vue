@@ -8,8 +8,12 @@
 export default {
   created() {
     this.$store.dispatch("getCurrentWeatherData")
+    this.$store.dispatch("getCurrentWeatherAlert")
+
     this.$store.dispatch("get36hrWeatherForecastData")
     this.$store.dispatch("getWeeklyWeatherForecastData")
+
+    this.$store.dispatch("getEarthquakeData")
   },
 }
 </script>

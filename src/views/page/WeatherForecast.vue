@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg">
         <loading :active="isLoading" :is-full-page="fullPage" />
         <div class="container">
             <div class="locationSelectBarContainer">
@@ -34,8 +34,8 @@
                             tempThirtySixHrWeatherForecastData.weatherElement[1].time[0].parameter.parameterName }}%</p>
                         <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
                         <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[0].parameter.parameterName }}°C
-                            ~{{ tempThirtySixHrWeatherForecastData.weatherElement[4].time[0].parameter.parameterName }}°C
+                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[0].parameter.parameterName }}°C~{{
+        tempThirtySixHrWeatherForecastData.weatherElement[4].time[0].parameter.parameterName }}°C
                         </p>
                     </div>
                 </div>
@@ -61,8 +61,8 @@
 
                         <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
                         <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[1].parameter.parameterName }}°C ~
-                            {{ tempThirtySixHrWeatherForecastData.weatherElement[4].time[1].parameter.parameterName }}°C
+                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[1].parameter.parameterName }}°C~{{
+        tempThirtySixHrWeatherForecastData.weatherElement[4].time[1].parameter.parameterName }}°C
                         </p>
                     </div>
                 </div>
@@ -88,8 +88,8 @@
 
                         <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
                         <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[2].parameter.parameterName }}°C ~
-                            {{ tempThirtySixHrWeatherForecastData.weatherElement[4].time[2].parameter.parameterName }}°C
+                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[2].parameter.parameterName }}°C~{{
+        tempThirtySixHrWeatherForecastData.weatherElement[4].time[2].parameter.parameterName }}°C
                         </p>
                     </div>
                 </div>
@@ -98,66 +98,94 @@
             <!-- week Forecast -->
             <div class="weekForecast">
                 <div class="weekForecastItemHeader">
-                    <div class="headerDate">日期</div>
+                    <div class="headerdate">
+                        <img src="@/assets/weatherIcon/date.png" alt="" class="headerImg">
+                    </div>
                     <div class="headerLine"></div>
-                    <div class="headerDay">白天</div>
-                    <div class="headerLine"></div>
-                    <div class="headerNight">晚上</div>
+                    <div class="headertemp">
+                        <img src="@/assets/weatherIcon/sun.png" alt="" class="headerImg">
+                        <img src="@/assets/weatherIcon/moon.png" alt="" class="headerImg">
+                    </div>
                 </div>
                 <div class="weekForecastItem" v-for="item in 6" :key="item">
                     <div class="date">
                         <h5>{{ getWeek(item) }}</h5>
-                        <p>{{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].startTime | onlyShowDate }}</p>
+                        <p v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
+                            {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 - 1].startTime | onlyShowDate
+                            }}</p>
+                        <p v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
+                            {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].startTime | onlyShowDate }}
+                        </p>
                     </div>
                     <div class="line"></div>
                     <div class="tempPart">
                         <div class="day">
                             <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2].elementValue[1].value)"
                                 alt="" class="weatherImg">
-                            <p>{{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value }}°C
+                            <p
+                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
+                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 - 1].elementValue[0].value
+                                }}°C ~
+                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2 - 1].elementValue[0].value
+                                }}°C
+                            </p>
+                            <p
+                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
+                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C
+                                ~
+                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value
+                                }}°C
                             </p>
                         </div>
                         <div class="night">
                             <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2 + 1].elementValue[1].value)"
                                 alt="" class="weatherImg">
-                            <p>{{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 + 1].elementValue[0].value
-                            }}°C ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2 + 1].elementValue[0].value
-                                }}°C</p>
+                            <p
+                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
+                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C
+                                ~
+                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value }}°C
+                            </p>
+                            <p
+                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
+                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 +
+                                    1].elementValue[0].value }}°C ~
+                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2 +
+                                    1].elementValue[0].value }}°C
+                            </p>
                         </div>
                     </div>
-
                 </div>
+
             </div>
 
             <!-- other Relevant Infomation : RH -->
             <div class="relevantInfo">
-                <div>
+                <div class="relevantInfoText">
                     <h2>相對溼度</h2>
                     <h4>{{ tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value }} %</h4>
                 </div>
                 <div class="relevantRHInfo">
                     <div class="RHCircle" id="RHCircle">
-                        <p v-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value == 0">無</p>
-                        <p
+                        <h2 v-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value == 0">無</h2>
+                        <h2
                             v-else-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value <= 33 && tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value > 0">
-                            低</p>
-                        <p
+                            低</h2>
+                        <h2
                             v-else-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value <= 66 && tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value > 33">
-                            中</p>
-                        <p v-else>高</p>
+                            中</h2>
+                        <h2 v-else>高</h2>
                     </div>
                 </div>
             </div>
 
             <!-- other Relevant Infomation : Wind Speed -->
             <div class="relevantInfo">
-                <div>
+                <div class="relevantInfoText">
                     <h2>最大風速</h2>
                     <h4>{{ tempWeeklyWeatherForecastData.weatherElement[4].time[0].elementValue[0].value }} m/s</h4>
                 </div>
-                <div class="relevantWDInfo">
+                <div class="relevantWDInfo relevantInfoImg">
                     <img src="@/assets/weatherIcon/arrow.png" alt="" class="arrow" id="arrow">
                     <p></p>
                 </div>
@@ -165,12 +193,12 @@
 
             <!-- other Relevant Infomation : CI -->
             <div class="relevantInfo">
-                <div>
+                <div class="relevantInfoText">
                     <h2>舒適度</h2>
                     <h4>{{ tempWeeklyWeatherForecastData.weatherElement[3].time[0].elementValue[0].value }} ~ {{
                         tempWeeklyWeatherForecastData.weatherElement[7].time[0].elementValue[0].value }}</h4>
                 </div>
-                <div class="relevantCIInfo">
+                <div class="relevantCIInfo relevantInfoImg">
                     <div class="CIText" id="down">
                         <p>{{ CIBar() }}</p>
                         <img src="@/assets/weatherIcon/down.png" alt="" class="down">
@@ -182,15 +210,15 @@
 
             <!-- other Relevant Infomation : UV -->
             <div class="relevantInfo">
-                <div>
+                <div class="relevantInfoText">
                     <h2>紫外線指數</h2>
                     <h4>{{ tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[0].value }}</h4>
 
                 </div>
-                <div class="relevantUVInfo">
+                <div class="relevantUVInfo relevantInfoImg">
                     <div class="UVCircle">
-                        <p id="UVLevel">{{
-                            tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[1].value }}</p>
+                        <h4 id="UVLevel">{{
+                            tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[1].value }}</h4>
                     </div>
                 </div>
 
@@ -220,8 +248,6 @@ export default ({
             isLoading: false,
             fullPage: true,
 
-            // tempThirtySixHrWeatherForecastData: {},
-            // tempWeeklyWeatherForecastData: {},
             selectLocation: '桃園市',
 
             weatherImg: {
@@ -240,11 +266,9 @@ export default ({
     },
     computed: {
         tempThirtySixHrWeatherForecastData() {
-            console.log("computed tempThirtySixHrWeatherForecastData");
             return this.$store.state.tempThirtySixHrWeatherForecastData
         },
         tempWeeklyWeatherForecastData() {
-            console.log("computed tempWeeklyWeatherForecastData");
             return this.$store.state.tempWeeklyWeatherForecastData
         }
     },
@@ -272,13 +296,11 @@ export default ({
         },
         RHCircle() {
             const vm = this;
-            // const RH = document.getElementById('RHCircle');
             let RHValue = vm.tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value;
 
             $('#RHCircle').css('--RHPercentage', `${RHValue}%`)
         },
         WDArrow() {
-            const arrow = document.getElementById('arrow');
             const vm = this;
 
             let WDValue = function () {
@@ -309,18 +331,22 @@ export default ({
                         break;
                 }
             }
-            arrow?.style.setProperty('--arrowDeg', `${WDValue()}deg`);
+
+            $("#arrow").animate({
+                rotate: `${WDValue()}deg`
+            }, 500)
         },
         CIBar() {
             const vm = this;
 
-            const CIBar = document.getElementById('down');
             const minValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[3].time[0].elementValue[0].value);
             const maxValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[7].time[0].elementValue[0].value);
             let CIValue = (minValue + maxValue) / 2;
             let changePixel = CIValue * (170 / 40) - 85;
 
-            $("#down").css('--down', `${changePixel}px`)
+            $("#down").animate({
+                left: `${changePixel}px`
+            }, 500)
 
             if (CIValue <= 10) {
                 $("#down").css('color', 'rgb(89, 0, 255)')
@@ -344,23 +370,25 @@ export default ({
         },
         UVLevelColor() {
             const vm = this;
-            const UVLevel = document.getElementById("UVLevel");
             const UVValue = vm.tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[1].value;
             switch (UVValue) {
                 case "低量級":
-                    UVLevel?.style.setProperty('color', 'green');
+                    $("#UVLevel").css('color', 'green')
                     break;
                 case "中量級":
-                    UVLevel?.style.setProperty('color', 'yellow');
+                    $("#UVLevel").css('color', 'yellow')
                     break;
                 case "高量級":
-                    UVLevel?.style.setProperty('color', 'orange');
+                    $("#UVLevel").css('color', 'orange')
                     break;
                 case "過量級":
-                    UVLevel?.style.setProperty('color', 'red');
+                    // $("#UVLevel").animate({
+                    //     color: 'red'
+                    // }, 5000)
+                    $("#UVLevel").css('color', 'red')
                     break;
                 case "危險級":
-                    UVLevel?.style.setProperty('color', 'purple');
+                    $("#UVLevel").css('color', 'purple')
                     break;
             }
         },
@@ -398,6 +426,9 @@ export default ({
                 }
             }
             return `星期${chinessNum()}`
+        },
+        weatherImgFadeIn() {
+            $('.weatherImg').hide(0).fadeIn(500);
         }
     },
     watch: {
@@ -405,29 +436,12 @@ export default ({
             const vm = this;
 
             vm.$store.dispatch('filterWeatherForecastData', vm.selectLocation)
-            // vm.$store.commit("FILTER36HRWEATHERFORECASTDATA", vm.selectLocation);
-            // vm.$store.commit("FILTERWEEKLYWEATHERFORECASTDATA", vm.selectLocation);
-
-            // vm.$store.state.thirtySixHrWeatherForecastData.filter(item => {
-            //     if (item.locationName == vm.selectLocation) {
-            //         vm.tempThirtySixHrWeatherForecastData = Object.assign({}, item);
-            //     }
-            // });
-
-            // vm.$store.state.WeeklyWeatherForecastData.filter((item) => {
-            //     if (item.locationName == vm.selectLocation) {
-            //         vm.tempWeeklyWeatherForecastData = Object.assign({}, item);
-            //     }
-            // });
             vm.RHCircle();
             vm.WDArrow();
             vm.CIBar();
             vm.UVLevelColor();
 
-            $('.weatherImg').on('load', function () {
-                $('.weatherImg').hide(0).fadeIn(500);
-                $('.weatherImg').off('load')
-            })
+            vm.weatherImgFadeIn();
         },
     },
     filters: {
@@ -439,17 +453,12 @@ export default ({
         }
     },
     mounted() {
-        console.log("mounted");
-
         this.RHCircle();
         this.WDArrow();
         this.CIBar();
         this.UVLevelColor();
 
-        $('.weatherImg').on('load', function () {
-            $('.weatherImg').hide(0).fadeIn(500);
-            $('.weatherImg').off('load')
-        })
+        this.weatherImgFadeIn();
     }
 })
 </script>
@@ -464,15 +473,24 @@ h4,
 h5,
 h6 {
     margin: 0;
+    font-family: '微軟正黑體';
+}
+
+h2 {
+    font-size: 30px;
+}
+
+.bg {
+    background-color: #FEFF86;
 }
 
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 2fr 1fr 1fr;
-    gap: 30px;
+    gap: 2rem;
 
-    padding: 20px;
+    padding: 2rem;
 }
 
 .locationSelectBarContainer {
@@ -481,16 +499,19 @@ h6 {
     gap: 30px;
 }
 
-.weatherTitleIcon {
+.locationSelectBarContainer>.weatherTitleIcon {
     height: 50px;
 
 }
 
-.locationSelectBar {
+.locationSelectBarContainer>.locationSelectBar {
     border: none;
     width: 20%;
     font-size: 30px;
     letter-spacing: 10px;
+    background-color: #FEFF86;
+
+    cursor: pointer;
 }
 
 .thirty-six-hr-forecast {
@@ -498,12 +519,13 @@ h6 {
     justify-content: space-around;
 
     gap: 2rem;
-    align-items: stretch;
     background-color: #146C94;
     padding: 2rem;
     border-radius: 15px;
 
     grid-column: span 2;
+
+    color: #FEFF86;
 }
 
 .thirty-six-hr-forecast-item {
@@ -511,22 +533,16 @@ h6 {
     background-color: #19A7CE;
     text-align: center;
     padding: 2rem 1rem;
-    width: 250px;
 }
 
 .thirty-six-hr-forecast-item>.title {
     font-weight: bolder;
     font-size: 32px;
     letter-spacing: 2px;
-    margin: 0;
-
-    color: white;
 }
 
 .thirty-six-hr-forecast-item>.subtitle {
     font-size: 14px;
-    margin-bottom: 0;
-    color: rgb(255, 255, 255);
     letter-spacing: 2px;
 }
 
@@ -538,13 +554,12 @@ h6 {
 .TEMPPoPflexbox {
     display: flex;
     justify-content: space-around;
+    gap: 6px;
 }
 
 .TEMPPoPflexbox>p {
     font-size: 17px;
     font-weight: bold;
-    margin: 0;
-    color: white;
 }
 
 .TEMPPoPflexbox>.weatherIcon {
@@ -558,26 +573,42 @@ h6 {
     justify-content: space-between;
 
     color: #146C94;
-    font-weight: bold;
+    font-weight: 900;
 }
 
 .weekForecast>.weekForecastItemHeader {
     display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    height: 5%;
+    justify-content: space-between;
+    height: 6%;
 
     border: solid #146C94 3px;
     background-color: #146C94;
-    color: white;
     border-radius: 10px;
     padding: 10px 1rem;
+}
+
+.weekForecast>.weekForecastItemHeader>.headerdate {
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .weekForecast>.weekForecastItemHeader>.headerLine {
     width: 3px;
     height: 100%;
-    background-color: white;
+    background-color: #FEFF86;
+}
+
+.weekForecast>.weekForecastItemHeader>.headertemp {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 75%;
+}
+
+.weekForecast>.weekForecastItemHeader>div>.headerImg {
+    height: 20px;
 }
 
 .weekForecast>.weekForecastItem {
@@ -588,6 +619,15 @@ h6 {
 
     display: flex;
     justify-content: space-between;
+}
+
+.weekForecast>.weekForecastItem:hover {
+    background-color: #146C94;
+    color: #FEFF86;
+}
+
+.weekForecast>.weekForecastItem:hover .line {
+    background-color: #FEFF86;
 }
 
 .weekForecast>.weekForecastItem>.date {
@@ -612,16 +652,11 @@ h6 {
     text-align: center;
 }
 
-.weekForecast>.weekForecastItem>.tempPart>.day>.weatherImg,
-.weekForecast>.weekForecastItem>.tempPart>.night>.weatherImg {
+.weekForecast>.weekForecastItem>.tempPart>div>.weatherImg {
     height: 56px;
 }
 
-.weekForecast>.weekForecastItem>.tempPart>.day {
-    padding: 0 1rem;
-}
-
-.weekForecast>.weekForecastItem>.tempPart>.night {
+.weekForecast>.weekForecastItem>.tempPart>* {
     padding: 0 1rem;
 }
 
@@ -629,32 +664,25 @@ h6 {
     background-color: #146C94;
     border-radius: 15px;
     padding: 2rem 1.5rem;
-    color: white;
+    color: #FEFF86;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 10px;
-}
 
-.relevantInfo>div>h2 {
-    margin-bottom: 2rem;
-    text-shadow: 2px 2px 2px black;
     letter-spacing: 2px;
 }
 
-.relevantInfo>div>h4 {
-    letter-spacing: 2px;
+.relevantInfo>.relevantInfoText {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .relevantInfo>.relevantRHInfo {
     display: flex;
     justify-content: center;
-}
-
-.relevantInfo>div>.RHCircle>p {
-    font-size: 30px;
-    margin: 0;
 }
 
 .relevantInfo>div>.RHCircle {
@@ -663,61 +691,42 @@ h6 {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    --RHPercentage: 0%;
 }
 
 .relevantInfo>div>.RHCircle::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: conic-gradient(#19A7CE var(--RHPercentage), white 0);
+    background: conic-gradient(#19A7CE var(--RHPercentage, 0), #FEFF86 0);
     -webkit-mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
     mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
-
-    /* transition: background 3s ease; */
-    /* transition-property: background;
-    transition-duration: 3s; */
 }
 
-.relevantInfo>.relevantWDInfo {
+.relevantInfo>.relevantInfoImg {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.relevantInfo>.relevantWDInfo>.arrow {
-    --arrowDeg: 0deg;
-
+.relevantInfo>.relevantInfoImg>.arrow {
     height: 100px;
-    transform: rotate(var(--arrowDeg));
+    transform: rotate(0deg);
 }
 
 .relevantInfo>.relevantCIInfo {
-    display: flex;
     gap: 10px;
-    justify-content: center;
     flex-direction: column;
 }
 
 .relevantInfo>.relevantCIInfo>.CIText {
-    --down: -85px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
 
-    color: #000;
-
     position: relative;
-    left: var(--down);
-}
-
-.relevantInfo>.relevantCIInfo>.CIText>p {
-    margin: 0;
-    font-weight: bold;
+    left: -85;
 }
 
 .relevantInfo>.relevantCIInfo>.CIText>.down {
@@ -727,16 +736,10 @@ h6 {
 .relevantInfo>.relevantCIInfo>.CIBar {
     background: linear-gradient(to right, rgb(38, 0, 128), blue, rgb(0, 128, 128), green, yellow, red);
     width: 100%;
-    height: 20px;
+    height: 15px;
 }
 
-.relevantInfo>.relevantUVInfo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.relevantInfo>.relevantUVInfo>.UVCircle {
+.relevantInfo>.relevantInfoImg>.UVCircle {
     height: 100%;
     aspect-ratio: 1;
     position: relative;
@@ -746,7 +749,7 @@ h6 {
     align-items: center;
 }
 
-.relevantInfo>.relevantUVInfo>.UVCircle::before {
+.relevantInfo>.relevantInfoImg>.UVCircle::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -755,11 +758,11 @@ h6 {
     -webkit-mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
     mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
 }
+#UVLevel{
+    color: white;
+    transition-duration: 1s;
+}
 
-.relevantInfo>.relevantUVInfo>.UVCircle>p {
-    font-size: 24px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin: 0;
-}</style>
+
+</style>
 
