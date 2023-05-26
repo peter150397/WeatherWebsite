@@ -1,22 +1,22 @@
 <template>
     <div>
         <div class="flex-box">
-            <div>
-                <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
 
-                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1 left">
-                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2 right">
-                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3 left">
-                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud4 right">
-                <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud5 left">
-                <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud6 right">
-                <img src="@/assets/bg-clouds/background-cloud-2.png" alt="bg-clouds" class="bg-clouds cloud7 left">
-                <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8 right">
-            </div>
-            <div class="buttonGroup">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1 left">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2 right">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3 left">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud4 right">
+            <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud5 left">
+            <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud6 right">
+            <img src="@/assets/bg-clouds/background-cloud-2.png" alt="bg-clouds" class="bg-clouds cloud7 left">
+            <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8 right">
+
+            <div class="TaiwanContainer">
+                <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
                 <button class="location" @click="changeLocation(item.locationName)" v-for="item in currentWeatherAlert"
                     :key="item.geocode" :class="filterPositionOfLocationButton(item.locationName)">
-                    <img src="@/assets/weatherIcon/waring.png" alt="" class="waringIcon" :title="`${item.hazardConditions.hazards[0].info.significance} : ${item.hazardConditions.hazards[0].info.phenomena}`"
+                    <img src="@/assets/weatherIcon/waring.png" alt="" class="waringIcon"
+                        :title="`${item.hazardConditions.hazards[0].info.significance} : ${item.hazardConditions.hazards[0].info.phenomena}`"
                         v-if="currentWeatherAlertLocation.indexOf(item.locationName) != -1">
                     <p>{{ item.locationName }}</p>
                 </button>
@@ -31,31 +31,49 @@
                 </select>
                 <table>
                     <thead>
-                        <th>縣市</th>
-                        <th>鄉鎮市</th>
-                        <th>測站名稱</th>
-                        <th>觀測時間 <br>({{ getDate() }})</th>
-                        <th>溫度</th>
-                        <th>相對溼度</th>
-                        <th>風速</th>
-                        <th>風向</th>
-                        <th>天氣</th>
+                        <th><p>縣市</p></th>
+                        <th><p>鄉鎮市</p></th>
+                        <th><p>測站名稱</p></th>
+                        <th><p>觀測時間<br>({{ getDate() }})</p></th>
+                        <th><p>溫度</p></th>
+                        <th><p>相對溼度</p></th>
+                        <th><p>風速</p></th>
+                        <th><p>風向</p></th>
+                        <th><p>天氣</p></th>
                     </thead>
                     <tbody v-for="item in showingData" :key="item.lat">
                         <tr>
-                            <td>{{ item.parameter[0].parameterValue }}</td>
-                            <td>{{ item.parameter[2].parameterValue }}</td>
-                            <td>{{ item.locationName }}</td>
-                            <td>{{ item.time.obsTime | onlyShowHour }}</td>
-                            <td :class="{ 'missingData': item.weatherElement[3].elementValue == -99 }">{{
-                                item.weatherElement[3].elementValue | TEMPfilter }}</td>
-                            <td :class="{ 'missingData': item.weatherElement[4].elementValue == -99 }">{{
-                                item.weatherElement[4].elementValue | HUMDfilter }}</td>
-                            <td :class="{ 'missingData': item.weatherElement[2].elementValue == -99 }">{{
-                                item.weatherElement[2].elementValue | WDSDfilter }}</td>
-                            <td :class="{ 'missingData': item.weatherElement[1].elementValue == -99 }">{{
-                                item.weatherElement[1].elementValue | WDIRfilter }}</td>
-                            <td v-if="item.weatherElement[14].elementValue == -99">無資料</td>
+                            <td>
+                                <p>{{ item.parameter[0].parameterValue }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.parameter[2].parameterValue }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.locationName }}</p>
+                            </td>
+                            <td>
+                                <p>{{ item.time.obsTime | onlyShowHour }}</p>
+                            </td>
+                            <td :class="{ 'missingData': item.weatherElement[3].elementValue == -99 }">
+                                <p>{{
+                                    item.weatherElement[3].elementValue | TEMPfilter }}</p>
+                            </td>
+                            <td :class="{ 'missingData': item.weatherElement[4].elementValue == -99 }">
+                                <p>{{
+                                    item.weatherElement[4].elementValue | HUMDfilter }}</p>
+                            </td>
+                            <td :class="{ 'missingData': item.weatherElement[2].elementValue == -99 }">
+                                <p>{{
+                                    item.weatherElement[2].elementValue | WDSDfilter }}</p>
+                            </td>
+                            <td :class="{ 'missingData': item.weatherElement[1].elementValue == -99 }">
+                                <p>{{
+                                    item.weatherElement[1].elementValue | WDIRfilter }}</p>
+                            </td>
+                            <td v-if="item.weatherElement[14].elementValue == -99">
+                                <p>無資料</p>
+                            </td>
                             <td v-else><img :src="weatherImgSwitch(item.weatherElement[14].elementValue)" alt="weatherImg"
                                     class="weatherImg" :title="item.weatherElement[14].elementValue"></td>
                         </tr>
@@ -261,8 +279,8 @@ export default {
 
             setTimeout(() => {
                 $("html").animate({
-                    scrollTop: 944
-                }, 0)
+                    scrollTop: document.querySelector('.flex-box').offsetHeight + document.querySelector('.container').offsetHeight 
+                }, 500)
             }, 10);
         },
         selectFilterLocation() {
@@ -345,10 +363,22 @@ export default {
 </script>
 
 <style scoped>
-p ,h1,h2,h3,h4,h5,h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
     font-family: '微軟正黑體';
 }
+
+p {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 
 .flex-box {
     display: flex;
@@ -359,10 +389,13 @@ p ,h1,h2,h3,h4,h5,h6 {
     overflow: hidden;
 }
 
+.TaiwanContainer {
+    position: relative;
+}
+
 .Taiwan-img {
     position: relative;
     height: 680px;
-    z-index: 2;
 }
 
 .location {
@@ -373,7 +406,6 @@ p ,h1,h2,h3,h4,h5,h6 {
     border: solid 2px #146C94;
     color: #146C94;
     background-color: transparent;
-    z-index: 2;
 
     display: flex;
     justify-content: center;
@@ -384,7 +416,10 @@ p ,h1,h2,h3,h4,h5,h6 {
     background-color: #146C94;
     color: #B0DAFF;
     transition-duration: 0.1s;
+
+    cursor: pointer;
 }
+
 
 .waringIcon {
     height: 24px;
@@ -446,118 +481,117 @@ p ,h1,h2,h3,h4,h5,h6 {
 }
 
 .Keelung {
-    right: 33%;
-    top: 7%;
+    right: 0px;
+    top: 12px;
 }
 
 .Taipei {
-    right: 38%;
-    top: 3%;
+    right: 120px;
+    top: 0px;
 }
 
 .NewTaipei {
-    right: 29.5%;
-    top: 14%;
+    right: -60px;
+    top: 50px;
 }
 
 .Taoyuan {
-    right: 43%;
-    top: 8%;
+    right: 210px;
+    top: 45px;
 }
 
 .HsinchuCity {
-    right: 47%;
-    top: 16%;
+    right: 250px;
+    top: 100px;
 }
 
 .HsinchuCountry {
-    right: 41%;
-    top: 23%;
+    right: 100px;
+    top: 120px;
 }
 
 .Miaoli {
-    right: 49%;
-    top: 22%;
+    right: 290px;
+    top: 145px;
 }
 
 .Taichung {
-    right: 52%;
-    top: 30%;
+    right: 320px;
+    top: 190px;
 }
 
 .Nantou {
-    right: 44%;
-    top: 42%;
+    right: 180px;
+    top: 280px;
 }
 
 .Changhua {
-    right: 54%;
-    top: 37%;
+    right: 350px;
+    top: 240px;
 }
 
 .Yunlin {
-    right: 56.5%;
-    top: 47%;
+    right: 390px;
+    top: 310px;
 }
 
 .ChiayiCity {
-    right: 47%;
-    top: 52%;
+    right: 210px;
+    top: 360px;
 }
 
 .ChiayiCountry {
-    right: 57%;
-    top: 54%;
+    right: 395px;
+    top: 360px;
 }
 
 .Tainan {
-    right: 57.5%;
-    top: 62%;
+    right: 400px;
+    top: 450px;
 }
 
 .Kaohsiung {
-    right: 55%;
-    top: 74%;
+    right: 370px;
+    top: 510px;
 }
 
 .Pingtung {
-    right: 51%;
-    top: 86%;
+    right: 300px;
+    top: 600px;
 }
 
 .Taitung {
-    right: 40%;
-    top: 78%;
+    right: 100px;
+    top: 530px;
 }
 
 .Hualien {
-    right: 34%;
-    top: 47%;
+    right: 10px;
+    top: 320px;
 }
 
 .Yilan {
-    right: 30%;
-    top: 25%;
+    right: -40px;
+    top: 150px;
 }
 
 .Penghu {
-    left: 31%;
-    top: 53%;
+    right: 530px;
+    top: 350px;
 }
 
 .Kinmen {
-    left: 30%;
-    top: 34%;
+    right: 530px;
+    top: 210px;
 }
 
 .Lianjiang {
-    left: 30%;
-    top: 19%;
+    right: 530px;
+    top: 100px;
 }
 
-
 .table-bg {
-    background:  linear-gradient(#B0DAFF, #FEFF86);
+    background: linear-gradient(#B0DAFF, #FEFF86);
     position: relative;
     padding: 3rem 20%;
 }
@@ -591,16 +625,138 @@ select {
     border-radius: 5px;
     background-color: #146C94;
     color: white;
+
+    font-size: 16px;
+    font-weight: bold;
 }
 
 th,
 td {
-    padding: 0.8rem;
+    padding: 0.4rem 0.2rem;
     border-bottom: solid 3px #146C94;
     text-align: center;
     letter-spacing: 1px;
 
-    min-width: 80px;
-    min-height: 60px;
+    width: 80px;
+    height: 60px;
 }
-</style>
+
+@media (max-width:991px) {
+    .Taiwan-img {
+        display: none;
+    }
+
+    .bg-clouds {
+        display: none;
+    }
+
+    .TaiwanContainer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .location {
+        position: static;
+        width: 200px;
+        height: 90px;
+    }
+
+    .Keelung {
+        order: 1;
+    }
+
+    .Taipei {
+        order: 2;
+    }
+
+    .NewTaipei {
+        order: 3;
+    }
+
+    .Taoyuan {
+        order: 4;
+    }
+
+    .HsinchuCity {
+        order: 5;
+    }
+
+    .HsinchuCountry {
+        order: 6;
+    }
+
+    .Miaoli {
+        order: 7;
+    }
+
+    .Taichung {
+        order: 8;
+    }
+
+    .Nantou {
+        order: 9;
+    }
+
+    .Changhua {
+        order: 10;
+    }
+
+    .Yunlin {
+        order: 11;
+    }
+
+    .ChiayiCity {
+        order: 12;
+    }
+
+    .ChiayiCountry {
+        order: 13;
+    }
+
+    .Tainan {
+        order: 14;
+    }
+
+    .Kaohsiung {
+        order: 15;
+    }
+
+    .Pingtung {
+        order: 16;
+    }
+
+    .Taitung {
+        order: 19;
+    }
+
+    .Hualien {
+        order: 18;
+    }
+
+    .Yilan {
+        order: 17;
+    }
+
+    .Penghu {
+        order: 20;
+    }
+
+    .Kinmen {
+        order: 21;
+    }
+
+    .Lianjiang {
+        order: 22;
+    }
+
+    .table-bg{
+        padding: 2rem 1.5rem;
+    }
+    th > p , td > p{
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0;
+    }
+}</style>

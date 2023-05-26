@@ -9,13 +9,22 @@
       <table class="infoTable">
         <thead>
           <th></th>
-          <th style="width: 15%;" class="infoTh">時間</th>
-          <th style="width: 15%;" class="infoTh">芮氏規模</th>
-          <th style="width: 15%;" class="infoTh">地震深度</th>
-          <th style="width: 45%;" class="infoTh">地點</th>
+          <th class="infoTh">
+            <p>時間</p>
+          </th>
+          <th class="infoTh">
+            <p>芮氏規模</p>
+          </th>
+          <th class="infoTh">
+            <p>地震深度</p>
+          </th>
+          <th class="infoTh">
+            <p>地點</p>
+          </th>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in earthquakeData" :key="item.ReportImageURI"  @mouseenter="getTempEarthquakeInfo(item)" @mouseleave="removeEpicenterAnimate">
+          <tr v-for="(item, index) in earthquakeData" :key="item.ReportImageURI" @mouseenter="startEpicenterAnimate(item)"
+            @click="getTempEarthquakeInfo(item)" @mouseleave="removeEpicenterAnimate">
             <td><img src="@/assets/weatherIcon/left.png" alt="" class="leftImg"
                 v-show="tempEarthquakeInfo.ReportImageURI == item.ReportImageURI"></td>
             <td class="infoTd" :class="changeBgColor(index)">
@@ -45,7 +54,7 @@ export default {
   data() {
     return {
       tempEarthquakeInfo: {},
-      IntervalID:'',
+      IntervalID: '',
       blurryValue: 0,
       radiusValue: 0
     }
@@ -64,37 +73,51 @@ export default {
     getTempEarthquakeInfo(item) {
       this.tempEarthquakeInfo = item
 
-      this.IntervalID = setInterval(()=> {
-        const vm = this
+      this.startEpicenterAnimate(item)
+    },
+    startEpicenterAnimate(item) {
+      const vm = this
 
-        vm.blurryValue += 0.5
-        vm.radiusValue += 0.5
-        if(vm.blurryValue > 10) {
-          vm.blurryValue = 0
-        }
-        if(vm.radiusValue > 10) {
-          vm.radiusValue = 0
-        }
-        
-        $('.Epicenter').css('--blurry' , `${vm.blurryValue}px`)
-        $('.Epicenter').css('--radius' , `${vm.radiusValue}px`)
-      },50)
+      if (item.ReportImageURI == vm.tempEarthquakeInfo.ReportImageURI) {
+        vm.IntervalID = setInterval(() => {
+          console.log("start");
+          vm.blurryValue += 0.5
+          if (vm.blurryValue > 10) {
+            vm.blurryValue = 0
+          }
+          vm.radiusValue += 0.5
+          if (vm.radiusValue > 10) {
+            vm.radiusValue = 0
+          }
+
+          $('.Epicenter').css('--blurry', `${vm.blurryValue}px`)
+          $('.Epicenter').css('--radius', `${vm.radiusValue}px`)
+        }, 50)
+      }
     },
     removeEpicenterAnimate() {
-      clearInterval(this.IntervalID)
-      $('.Epicenter').css('--blurry' , `0px`)
-      $('.Epicenter').css('--radius' , `0px`)
+      const vm = this
+
+      clearInterval(vm.IntervalID)
+      console.log("remove");
+      vm.blurryValue = 0
+      vm.radiusValue = 0
+
+      $('.Epicenter').css('--blurry', `0px`)
+      $('.Epicenter').css('--radius', `0px`)
     }
   },
+
   watch: {
     tempEarthquakeInfo() {
       const vm = this;
+      let img = document.querySelector('.taiwanImg')
 
       const lat = vm.tempEarthquakeInfo.EarthquakeInfo.Epicenter.EpicenterLatitude;
       const lon = vm.tempEarthquakeInfo.EarthquakeInfo.Epicenter.EpicenterLongitude;
 
-      let leftValue = (lon - 119) * 469 / 4 + 69
-      let bottomValue = (lat - 21) * 635 / 5 + 19
+      let leftValue = (lon - 119) * (img.clientWidth * 0.89) / 4 + 24
+      let bottomValue = (lat - 21) * (img.clientHeight * 0.94) / 5 + 20
 
       $('.Epicenter').css('left', `${leftValue}px`)
       $('.Epicenter').css('bottom', `${bottomValue}px`)
@@ -115,8 +138,11 @@ export default {
       return `${e.slice(5, 7)}月${e.slice(8, 10)}日`
     }
   },
-  created() {
-    this.tempEarthquakeInfo = this.earthquakeData[0]
+  // created() {
+  //   this.tempEarthquakeInfo = this.earthquakeData[0]
+  // },
+  beforeDestroy() {
+    clearInterval(this.IntervalID)
   }
 }
 </script>
@@ -143,20 +169,21 @@ h6 {
 
 .taiwanImgContainer {
   position: sticky;
-  top: 5vh;
+  top: 1rem;
 }
 
 .taiwanImg {
-  height: 681.3px;
+  width: 35vw;
+  min-width: 300px;
 }
 
 .Epicenter {
-  --blurry:1px;
-  --radius:1px;
+  --blurry: 0px;
+  --radius: 0px;
 
   position: absolute;
-  bottom: 19px;
-  left: 69px;
+  bottom: -1000px;
+  left: -1000px;
 
   box-shadow: 0px 0px var(--blurry) var(--radius) rgb(255, 130, 130);
 
@@ -173,19 +200,19 @@ h6 {
 
 .infoTable {
   text-align: center;
+  border-collapse: collapse;
 }
 
 th {
   padding: 1rem 0.5rem;
   position: sticky;
-  top: 0;
+  top: 1rem;
   background-color: white;
-
-  z-index: 1;
 }
 
 td {
   padding: 1.5rem 0.5rem;
+
 }
 
 .infoTh {
@@ -201,5 +228,17 @@ tr:hover .infoTd {
 
 .blueBg {
   background-color: #e4f1fd;
+}
+
+@media (max-width:991px) {
+
+  th,
+  td {
+    padding: 0rem;
+  }
+
+  p {
+    font-size: 14px;
+  }
 }
 </style>

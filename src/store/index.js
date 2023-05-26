@@ -42,12 +42,16 @@ export default new Vuex.Store({
       "澎湖縣",
     ],
     weatherType: [],
+
+    isLoading: false
   },
   getters: {
   },
   mutations: {
     GETCURRENTWEATHERDATA(state, payload) {
+      state.isLoading = true
       state.currentWeatherData = payload;
+      state.isLoading = false
     },
     GETCURRENTWEATHERALERT(state, payload) {
       payload.sort(function (a, b) {

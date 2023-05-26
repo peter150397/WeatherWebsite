@@ -1,6 +1,6 @@
 <template>
     <div class="bg">
-        <loading :active="isLoading" :is-full-page="fullPage" />
+        <loading :active="$store.state.isLoading"/>
         <div class="container">
             <div class="locationSelectBarContainer">
                 <img src="@/assets/weatherIcon/placeholder.png" alt="" class="weatherTitleIcon">
@@ -26,17 +26,22 @@
                         {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].endTime | onlyShowHour }}</p>
 
                     <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].parameter.parameterValue)"
-                        alt="" class="weatherImg">
+                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].parameter.parameterName">
 
                     <div class="TEMPPoPflexbox">
-                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[1].time[0].parameter.parameterName }}%</p>
-                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[0].parameter.parameterName }}°C~{{
+                        <div>
+                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[0].parameter.parameterName }}%</p>
+                        </div>
+                        <div>
+                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[0].parameter.parameterName }}°C~{{
         tempThirtySixHrWeatherForecastData.weatherElement[4].time[0].parameter.parameterName }}°C
-                        </p>
+                            </p>
+                        </div>
+
                     </div>
                 </div>
                 <div class="thirty-six-hr-forecast-item">
@@ -52,18 +57,21 @@
                         {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].endTime | onlyShowHour }}</p>
 
                     <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].parameter.parameterValue)"
-                        alt="" class="weatherImg">
+                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].parameter.parameterName">
 
                     <div class="TEMPPoPflexbox">
-                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[1].time[1].parameter.parameterName }}%</p>
-
-                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[1].parameter.parameterName }}°C~{{
+                        <div>
+                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[1].parameter.parameterName }}%</p>
+                        </div>
+                        <div>
+                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[1].parameter.parameterName }}°C~{{
         tempThirtySixHrWeatherForecastData.weatherElement[4].time[1].parameter.parameterName }}°C
-                        </p>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="thirty-six-hr-forecast-item">
@@ -79,18 +87,23 @@
                         {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].endTime | onlyShowHour }}</p>
 
                     <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].parameter.parameterValue)"
-                        alt="" class="weatherImg">
+                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].parameter.parameterName">
 
                     <div class="TEMPPoPflexbox">
-                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[1].time[2].parameter.parameterName }}%</p>
+                        <div>
+                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[2].parameter.parameterName }}%</p>
+                        </div>
 
-                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                        <p>{{
-                            tempThirtySixHrWeatherForecastData.weatherElement[2].time[2].parameter.parameterName }}°C~{{
+                        <div>
+                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                            <p>{{
+                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[2].parameter.parameterName }}°C~{{
         tempThirtySixHrWeatherForecastData.weatherElement[4].time[2].parameter.parameterName }}°C
-                        </p>
+                            </p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -121,7 +134,7 @@
                     <div class="tempPart">
                         <div class="day">
                             <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2].elementValue[1].value)"
-                                alt="" class="weatherImg">
+                                alt="" class="weatherImg" :title="tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2].elementValue[0].value">
                             <p
                                 v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
                                 {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 - 1].elementValue[0].value
@@ -139,12 +152,13 @@
                         </div>
                         <div class="night">
                             <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2 + 1].elementValue[1].value)"
-                                alt="" class="weatherImg">
+                                alt="" class="weatherImg" :title="tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2 + 1].elementValue[0].value">
                             <p
                                 v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
                                 {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C
                                 ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value }}°C
+                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value
+                                }}°C
                             </p>
                             <p
                                 v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
@@ -200,7 +214,7 @@
                 </div>
                 <div class="relevantCIInfo relevantInfoImg">
                     <div class="CIText" id="down">
-                        <p>{{ CIBar() }}</p>
+                        <p>{{ CIValue }}</p>
                         <img src="@/assets/weatherIcon/down.png" alt="" class="down">
                     </div>
                     <div class="CIBar"></div>
@@ -211,7 +225,7 @@
             <!-- other Relevant Infomation : UV -->
             <div class="relevantInfo">
                 <div class="relevantInfoText">
-                    <h2>紫外線指數</h2>
+                    <h2>紫外線</h2>
                     <h4>{{ tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[0].value }}</h4>
 
                 </div>
@@ -249,6 +263,7 @@ export default ({
             fullPage: true,
 
             selectLocation: '桃園市',
+            CIValue:"",
 
             weatherImg: {
                 cloud: cloud,
@@ -341,31 +356,39 @@ export default ({
 
             const minValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[3].time[0].elementValue[0].value);
             const maxValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[7].time[0].elementValue[0].value);
-            let CIValue = (minValue + maxValue) / 2;
-            let changePixel = CIValue * (170 / 40) - 85;
 
-            $("#down").animate({
-                left: `${changePixel}px`
-            }, 500)
+            let CIValue = (minValue + maxValue) / 2;
+
+
+            setTimeout(() => {
+                let clientWidth = document.querySelector('.CIBar').clientWidth;
+                console.log(clientWidth);
+
+                let changePixel = CIValue * (clientWidth / 40) - (clientWidth / 2);
+                $("#down").animate({
+                    left: `${changePixel}px`
+                }, 500)
+            }, 1)
+
 
             if (CIValue <= 10) {
                 $("#down").css('color', 'rgb(89, 0, 255)')
-                return "非常寒冷";
+                vm.CIValue = "非常寒冷";
             } else if (CIValue > 10 && CIValue <= 15) {
                 $("#down").css('color', 'rgb(0, 153, 255)')
-                return "寒冷";
+                vm.CIValue = "寒冷";
             } else if (CIValue > 15 && CIValue <= 19) {
                 $("#down").css('color', 'rgb(0, 247, 255)')
-                return "稍有寒意";
+                vm.CIValue = "稍有寒意";
             } else if (CIValue > 19 && CIValue <= 26) {
                 $("#down").css('color', 'rgb(0, 255, 0)')
-                return "舒適";
+                vm.CIValue = "舒適";
             } else if (CIValue > 26 && CIValue <= 30) {
                 $("#down").css('color', 'orange')
-                return "悶熱";
+                vm.CIValue = "悶熱";
             } else if (CIValue > 30) {
                 $("#down").css('color', 'red')
-                return "易中暑";
+                vm.CIValue = "易中暑";
             }
         },
         UVLevelColor() {
@@ -382,9 +405,6 @@ export default ({
                     $("#UVLevel").css('color', 'orange')
                     break;
                 case "過量級":
-                    // $("#UVLevel").animate({
-                    //     color: 'red'
-                    // }, 5000)
                     $("#UVLevel").css('color', 'red')
                     break;
                 case "危險級":
@@ -480,6 +500,10 @@ h2 {
     font-size: 30px;
 }
 
+h4 {
+    font-size: 24px;
+}
+
 .bg {
     background-color: #FEFF86;
 }
@@ -487,10 +511,10 @@ h2 {
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto 2fr 1fr 1fr;
+    grid-template-rows: auto 47% 20% 20%;
     gap: 2rem;
 
-    padding: 2rem;
+    padding: 2rem 8rem;
 }
 
 .locationSelectBarContainer {
@@ -501,12 +525,11 @@ h2 {
 
 .locationSelectBarContainer>.weatherTitleIcon {
     height: 50px;
-
 }
 
 .locationSelectBarContainer>.locationSelectBar {
     border: none;
-    width: 20%;
+    width: 30%;
     font-size: 30px;
     letter-spacing: 10px;
     background-color: #FEFF86;
@@ -516,9 +539,9 @@ h2 {
 
 .thirty-six-hr-forecast {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 10px;
 
-    gap: 2rem;
     background-color: #146C94;
     padding: 2rem;
     border-radius: 15px;
@@ -553,16 +576,24 @@ h2 {
 
 .TEMPPoPflexbox {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     gap: 6px;
 }
 
-.TEMPPoPflexbox>p {
+.TEMPPoPflexbox>* {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.TEMPPoPflexbox>div>p {
     font-size: 17px;
     font-weight: bold;
 }
 
-.TEMPPoPflexbox>.weatherIcon {
+.TEMPPoPflexbox>div>.weatherIcon {
     height: 25px;
 }
 
@@ -571,6 +602,7 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1rem;
 
     color: #146C94;
     font-weight: 900;
@@ -579,6 +611,7 @@ h2 {
 .weekForecast>.weekForecastItemHeader {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     height: 6%;
 
     border: solid #146C94 3px;
@@ -619,6 +652,7 @@ h2 {
 
     display: flex;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .weekForecast>.weekForecastItem:hover {
@@ -636,6 +670,8 @@ h2 {
     justify-content: center;
     align-items: center;
     gap: 5px;
+
+    font-size: 20px;
 }
 
 .weekForecast>.weekForecastItem>.line {
@@ -657,7 +693,7 @@ h2 {
 }
 
 .weekForecast>.weekForecastItem>.tempPart>* {
-    padding: 0 1rem;
+    padding: 0;
 }
 
 .relevantInfo {
@@ -686,6 +722,7 @@ h2 {
 }
 
 .relevantInfo>div>.RHCircle {
+    height: 100%;
     aspect-ratio: 1;
     position: relative;
     display: flex;
@@ -710,7 +747,7 @@ h2 {
 }
 
 .relevantInfo>.relevantInfoImg>.arrow {
-    height: 100px;
+    height: 5rem;
     transform: rotate(0deg);
 }
 
@@ -726,7 +763,7 @@ h2 {
     gap: 2px;
 
     position: relative;
-    left: -85;
+    left: 0px;
 }
 
 .relevantInfo>.relevantCIInfo>.CIText>.down {
@@ -758,11 +795,83 @@ h2 {
     -webkit-mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
     mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
 }
-#UVLevel{
+
+#UVLevel {
     color: white;
     transition-duration: 1s;
 }
 
 
+@media (max-width:991px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+
+        padding: 2rem 2rem;
+    }
+
+    .locationSelectBarContainer {
+        grid-column: span 2;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .locationSelectBarContainer>.locationSelectBar{
+        width: 50%;
+    }
+
+    .thirty-six-hr-forecast {
+        grid-column: span 2;
+    }
+
+    .thirty-six-hr-forecast-item>.weatherImg {
+        height: auto;
+        width: 100%;
+        margin: 0;
+    }
+
+    .TEMPPoPflexbox {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .TEMPPoPflexbox>p {
+        font-size: 20px;
+    }
+
+    .weekForecast {
+        grid-area: 5/1/6/3;
+    }
+
+    .weekForecast>.weekForecastItemHeader>.headerdate {
+        width: 80px;
+    }
+
+    .weekForecast>.weekForecastItem>.date {
+        font-size: 28px;
+    }
+
+    .weekForecast>.weekForecastItem>.tempPart>div>.weatherImg {
+        height: 120px;
+    }
+
+    .weekForecast>.weekForecastItem>.tempPart>*>p {
+        font-size: 22px;
+    }
+
+    .relevantInfo {
+        height: 120px;
+        padding: 1.5rem;
+    }
+}
+@media (max-width:516px){
+    h2{
+        font-size: 24px;
+    }
+    h4{
+        font-size: 20px;
+    }
+}
 </style>
 
