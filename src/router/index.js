@@ -4,13 +4,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Dachboard',
-    component: () => import('../views/Dashboard.vue'),
-    children: [
       {
-        path: '/currentweather',
+        path: '/',
         name: 'currentWeather',
         component: () => import('../views/page/CurrentWeather.vue'),
       },
@@ -24,8 +19,7 @@ const routes = [
         name: 'Earthquake',
         component: () => import('../views/page/Earthquake.vue'),
       },
-    ]
-  },
+
 ]
 
 const router = new VueRouter({

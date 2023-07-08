@@ -8,12 +8,9 @@ export default new Vuex.Store({
   state: {
     currentWeatherData: [],
     currentWeatherAlert: [],
-    currentWeatherAlertLocation: [],
 
     thirtySixHrWeatherForecastData: [],
     WeeklyWeatherForecastData: [],
-    tempThirtySixHrWeatherForecastData: {},
-    tempWeeklyWeatherForecastData: {},
 
     EarthquakeDate:[],
 
@@ -41,61 +38,21 @@ export default new Vuex.Store({
       "金門縣",
       "澎湖縣",
     ],
-    weatherType: [],
-
-    isLoading: false
   },
   getters: {
   },
   mutations: {
     GETCURRENTWEATHERDATA(state, payload) {
-      state.isLoading = true
       state.currentWeatherData = payload;
-      state.isLoading = false
     },
     GETCURRENTWEATHERALERT(state, payload) {
-      payload.sort(function (a, b) {
-        return a.geocode - b.geocode
-      });
-
       state.currentWeatherAlert = payload
-
-      const alertLocation = new Set();
-      payload.forEach((item) => {
-        if (item.hazardConditions.hazards[0]) {
-          alertLocation.add(item.locationName);
-        }
-      })
-      state.currentWeatherAlertLocation = Array.from(alertLocation);
-    },
-    GETCURRENTWEATHERTYPE(state, payload) {
-      const weatherType = new Set();
-      payload.forEach((item) => {
-        weatherType.add(item.weatherElement[14].elementValue);
-      })
-      state.weatherType = Array.from(weatherType);
     },
     GET36HRWEATHERFORECASTDATA(state, payload) {
       state.thirtySixHrWeatherForecastData = payload;
-      state.tempThirtySixHrWeatherForecastData = payload[13];
     },
     GETWEEKLYWEATHERFORECASTDATA(state, payload) {
       state.WeeklyWeatherForecastData = payload;
-      state.tempWeeklyWeatherForecastData = payload[13];
-    },
-    FILTER36HRWEATHERFORECASTDATA(state, payload) {
-      state.WeeklyWeatherForecastData.filter((item) => {
-        if (item.locationName == payload) {
-          state.tempWeeklyWeatherForecastData = Object.assign({}, item);
-        }
-      })
-    },
-    FILTERWEEKLYWEATHERFORECASTDATA(state, payload) {
-      state.thirtySixHrWeatherForecastData.filter((item) => {
-        if (item.locationName == payload) {
-          state.tempThirtySixHrWeatherForecastData = Object.assign({}, item);
-        }
-      })
     },
 
     GETEARTHQUAKEDATA(state, payload) {
@@ -108,7 +65,6 @@ export default new Vuex.Store({
 
       axios.get(api).then((res) => {
         context.commit('GETCURRENTWEATHERDATA', res.data.records.location);
-        context.commit('GETCURRENTWEATHERTYPE', res.data.records.location);
       })
     },
     getCurrentWeatherAlert(context) {
@@ -118,8 +74,6 @@ export default new Vuex.Store({
         context.commit('GETCURRENTWEATHERALERT', res.data.records.location);
       })
     },
-
-
 
     get36hrWeatherForecastData(context) {
       const api = `${process.env.VUE_APP_APIPATH}F-C0032-001?Authorization=${process.env.VUE_APP_CUSTOMPATH}`
@@ -135,17 +89,11 @@ export default new Vuex.Store({
         context.commit('GETWEEKLYWEATHERFORECASTDATA', res.data.records.locations[0].location);
       })
     },
-    filterWeatherForecastData(context, payload) {
-      context.commit('FILTER36HRWEATHERFORECASTDATA', payload);
-      context.commit('FILTERWEEKLYWEATHERFORECASTDATA', payload);
-    },
-
 
     getEarthquakeData(context) {
       const api = `${process.env.VUE_APP_APIPATH}E-A0016-001?Authorization=${process.env.VUE_APP_CUSTOMPATH}`
 
       axios.get(api).then((res) => {
-        console.log(res.data.records.Earthquake);
         context.commit('GETEARTHQUAKEDATA', res.data.records.Earthquake);
       })
     }

@@ -9,23 +9,23 @@
       <table class="infoTable">
         <thead>
           <th></th>
-          <th class="infoTh">
+          <th>
             <p>時間</p>
           </th>
-          <th class="infoTh">
+          <th>
             <p>芮氏規模</p>
           </th>
-          <th class="infoTh">
+          <th>
             <p>地震深度</p>
           </th>
-          <th class="infoTh">
+          <th>
             <p>地點</p>
           </th>
         </thead>
         <tbody>
           <tr v-for="(item, index) in earthquakeData" :key="item.ReportImageURI" @mouseenter="startEpicenterAnimate(item)"
             @click="getTempEarthquakeInfo(item)" @mouseleave="removeEpicenterAnimate">
-            <td><img src="@/assets/weatherIcon/left.png" alt="" class="leftImg"
+            <td><img src="@/assets/weatherIcon/left.png" alt="" class="arrow"
                 v-show="tempEarthquakeInfo.ReportImageURI == item.ReportImageURI"></td>
             <td class="infoTd" :class="changeBgColor(index)">
               <p>{{ item.EarthquakeInfo.OriginTime | onlyShowDate }}</p>
@@ -74,13 +74,13 @@ export default {
       this.tempEarthquakeInfo = item
 
       this.startEpicenterAnimate(item)
+      $('.Epicenter').css('display', 'block')
     },
     startEpicenterAnimate(item) {
       const vm = this
 
       if (item.ReportImageURI == vm.tempEarthquakeInfo.ReportImageURI) {
         vm.IntervalID = setInterval(() => {
-          console.log("start");
           vm.blurryValue += 0.5
           if (vm.blurryValue > 10) {
             vm.blurryValue = 0
@@ -99,7 +99,6 @@ export default {
       const vm = this
 
       clearInterval(vm.IntervalID)
-      console.log("remove");
       vm.blurryValue = 0
       vm.radiusValue = 0
 
@@ -138,9 +137,6 @@ export default {
       return `${e.slice(5, 7)}月${e.slice(8, 10)}日`
     }
   },
-  // created() {
-  //   this.tempEarthquakeInfo = this.earthquakeData[0]
-  // },
   beforeDestroy() {
     clearInterval(this.IntervalID)
   }
@@ -148,33 +144,20 @@ export default {
 </script>
 
 <style scoped>
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-family: '微軟正黑體'
-}
-
 .container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 .taiwanImgContainer {
   position: sticky;
-  top: 1rem;
+  top: 0;
 }
 
 .taiwanImg {
-  width: 35vw;
-  min-width: 300px;
+  width: 580px;
 }
 
 .Epicenter {
@@ -182,8 +165,10 @@ h6 {
   --radius: 0px;
 
   position: absolute;
-  bottom: -1000px;
-  left: -1000px;
+  bottom: 0px;
+  left: 0px;
+
+  display: none;
 
   box-shadow: 0px 0px var(--blurry) var(--radius) rgb(255, 130, 130);
 
@@ -193,31 +178,39 @@ h6 {
   background-color: red;
 }
 
-.leftImg {
-  height: 40px;
-  transform: rotate(90deg);
-}
-
 .infoTable {
   text-align: center;
   border-collapse: collapse;
+  width: 50%;
 }
 
 th {
   padding: 1rem 0.5rem;
   position: sticky;
-  top: 1rem;
+  z-index: 1;
+  top: 0;
   background-color: white;
+  border-bottom: solid 2px rgb(180, 180, 180);
+}
+
+th:nth-child(1){
+  min-width: 57px;
+  border: none;
+}
+
+th:nth-child(2){
+  min-width: 86px;
+}
+
+.arrow {
+  height: 40px;
+  transform: rotate(90deg);
 }
 
 td {
   padding: 1.5rem 0.5rem;
-
 }
 
-.infoTh {
-  border-bottom: solid 2px rgb(180, 180, 180);
-}
 
 tr:hover .infoTd {
   background-color: #146C94;
@@ -230,15 +223,28 @@ tr:hover .infoTd {
   background-color: #e4f1fd;
 }
 
-@media (max-width:991px) {
-
-  th,
-  td {
-    padding: 0rem;
+@media (max-width:1093px) {
+  .taiwanImg{
+    width: 400px;
   }
+}
 
-  p {
+@media (max-width:790px){
+  .taiwanImg{
+    width: 300px;
+  }
+  p{
     font-size: 14px;
+  }
+  th:nth-child(2),th:nth-child(1){
+    min-width: 0;
+  }
+  .arrow {
+    height: 20px;
+    transform: rotate(90deg);
+  }
+  th:nth-child(5) , td:nth-child(5){
+    display: none;
   }
 }
 </style>

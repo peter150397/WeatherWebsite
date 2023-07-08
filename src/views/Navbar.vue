@@ -1,22 +1,21 @@
 <template>
     <div>
         <div class="container">
-
             <div class="burgerBarContainer">
                 <div class="burgerBarFlexBox">
                     <h1>Peter的氣象網站</h1>
-                    <img src="@/assets/weatherIcon/burger-bar.png" alt="" class="burgerBarImg">
+                    <img src="@/assets/weatherIcon/burger-bar.png" alt="" class="burgerBarImg" @click="linkSlideToggle">
                 </div>
                 
                 <div class="burgerBarLinkContainer">
-                    <router-link to="/currentweather">
-                        <p>即時天氣狀況</p>
+                    <router-link to="/">
+                        即時天氣狀況
                     </router-link>
                     <router-link to="/weatherforecast">
-                        <p>一周天氣預測</p>
+                        一周天氣預測
                     </router-link>
                     <router-link to="/earthquake">
-                        <p>近期地震資訊</p>
+                        近期地震資訊
                     </router-link>
                 </div>
             </div>
@@ -24,18 +23,17 @@
             <div class="normalContainer">
                 <h1>Peter的氣象網站</h1>
                 <div class="normalLinkContainer">
-                    <router-link to="/currentweather">
-                        <p>即時天氣狀況</p>
+                    <router-link to="/">
+                        即時天氣狀況
                     </router-link>
                     <router-link to="/weatherforecast">
-                        <p>一周天氣預測</p>
+                        一周天氣預測
                     </router-link>
                     <router-link to="/earthquake">
-                        <p>近期地震資訊</p>
+                        近期地震資訊
                     </router-link>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -44,39 +42,28 @@
 import $ from "jquery";
 
 export default {
-    data() {
-        return {
-            isClick: false
+    methods: {
+        linkSlideToggle() {
+            $('.burgerBarLinkContainer').slideToggle(500)
         }
     },
-    mounted() {
-        const vm = this
-
-        $('.burgerBarImg').click(function () {
-            $('.burgerBarLinkContainer').slideToggle(500)
-        })
-    }
+    // mounted() {
+    //     $('.burgerBarImg').click(function () {
+    //         $('.burgerBarLinkContainer').slideToggle(500)
+    //     })
+    // }
 }
 </script>
 
 <style scoped>
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-    font-family: '微軟正黑體'
+h1 , a {
+    color: white;
 }
 
 .container {
-    margin: 0;
     padding: 1rem;
 
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/bg-title.jpg');
-    background-repeat: no-repeat;
     background-position: center 30%;
     background-size: cover;
 }
@@ -85,9 +72,6 @@ h6 {
 .normalLinkContainer {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-
-    width: 100%;
 }
 
 .normalLinkContainer>a:hover {
@@ -107,14 +91,15 @@ h6 {
     border: solid 3px white;
     border-radius: 15px;
     padding: 0.6rem;
-    height: 30px;
+    height: 60px;
+
+    position: absolute;
+    right: 1rem;
 
     cursor: pointer;
 }
 
 h1 {
-    color: white;
-    font-weight: 900;
     font-size: 50px;
     letter-spacing: 20px;
     text-align: center;
@@ -122,14 +107,9 @@ h1 {
     padding: 70px 0;
 }
 
-p {
-    color: white;
+a {
     font-size: 25px;
     letter-spacing: 5px;
-}
-
-a {
-    text-decoration-line: none;
 }
 
 @media (max-width:991px) {
@@ -140,24 +120,21 @@ a {
     .burgerBarContainer{
         display: inline;
     }
-    .burgerBarContainer > .burgerBarFlexBox{
+    .burgerBarFlexBox{
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .burgerBarContainer > .burgerBarFlexBox > .burgerBarImg{
-        position: absolute;
-        right: 1rem;
-    }
 
-    .burgerBarContainer > .burgerBarLinkContainer{
+    .burgerBarLinkContainer{
         display: none;
         text-align: end;
     }
-    .burgerBarContainer > .burgerBarLinkContainer > a > p{
+    .burgerBarLinkContainer > a {
         margin: 5px 0;
+        display: block;
     }
-    .burgerBarContainer > .burgerBarLinkContainer > a :hover{
+    .burgerBarLinkContainer > a:hover{
         box-shadow: 5px 0 0 white;
         transform: translateX(-5px);
         padding-right: 15px;
@@ -165,9 +142,8 @@ a {
         transition-duration: 0.5s;
     }
 
-
     h1{
-        padding: 20px 0;
+        padding: 20px 56px;
     }
 }
 

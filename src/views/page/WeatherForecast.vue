@@ -1,241 +1,210 @@
 <template>
-    <div class="bg">
-        <loading :active="$store.state.isLoading"/>
-        <div class="container">
-            <div class="locationSelectBarContainer">
-                <img src="@/assets/weatherIcon/placeholder.png" alt="" class="weatherTitleIcon">
-                <select class="locationSelectBar" v-model="selectLocation">
-                    <option :value="item" v-for="item in $store.state.locationArray" :key="item">{{ item }}</option>
-                </select>
-            </div>
+    <div class="weatherForecastContainer">
+        <div class="locationSelectBarContainer">
+            <img src="@/assets/weatherIcon/placeholder.png" alt="">
+            <select v-model="selectLocation">
+                <option :value="item" v-for="item in $store.state.locationArray" :key="item">{{ item }}</option>
+            </select>
+        </div>
 
-            <!-- 36HR Forecast -->
-            <div class="thirty-six-hr-forecast">
-                <div class="thirty-six-hr-forecast-item">
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].startTime.slice(11, 16) == '06:00'">
-                        今日白天</p>
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].startTime.slice(11, 16) == '12:00'">
-                        今日下午</p>
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].startTime.slice(11, 16) == '18:00' || tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].startTime.slice(11, 16) == '00:00'">
-                        今晚明晨</p>
-                    <p class="subtitle">{{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].startTime |
-                        onlyShowHour }} ~
-                        {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].endTime | onlyShowHour }}</p>
+        <!-- 36HR Forecast -->
+        <div class="thirtySixHrForecastContainer">
+            <div class="thirtySixHrForecastItem">
+                <h2>
+                    {{ changeTitle(temp36HrData.weatherElement[0].time[0].startTime.slice(11, 16), true) }}
+                </h2>
+                <p>
+                    {{ temp36HrData.weatherElement[0].time[0].startTime | onlyShowHour }} ~
+                    {{ temp36HrData.weatherElement[0].time[0].endTime | onlyShowHour }}
+                </p>
 
-                    <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].parameter.parameterValue)"
-                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[0].parameter.parameterName">
+                <img :src="weatherImgSwitch(temp36HrData.weatherElement[0].time[0].parameter.parameterValue)" alt=""
+                    class="weatherImg" :title="temp36HrData.weatherElement[0].time[0].parameter.parameterName">
 
-                    <div class="TEMPPoPflexbox">
-                        <div>
-                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[0].parameter.parameterName }}%</p>
-                        </div>
-                        <div>
-                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[0].parameter.parameterName }}°C~{{
-        tempThirtySixHrWeatherForecastData.weatherElement[4].time[0].parameter.parameterName }}°C
-                            </p>
-                        </div>
-
+                <div class="TEMPPoPflexbox">
+                    <div>
+                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                        <p>{{
+                            temp36HrData.weatherElement[1].time[0].parameter.parameterName }}%</p>
                     </div>
-                </div>
-                <div class="thirty-six-hr-forecast-item">
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].startTime.slice(11, 16) == '18:00'">
-                        今晚明晨</p>
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].startTime.slice(11, 16) == '06:00'">
-                        明日白天</p>
-
-                    <p class="subtitle">{{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].startTime |
-                        onlyShowHour }} ~
-                        {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].endTime | onlyShowHour }}</p>
-
-                    <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].parameter.parameterValue)"
-                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[1].parameter.parameterName">
-
-                    <div class="TEMPPoPflexbox">
-                        <div>
-                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[1].parameter.parameterName }}%</p>
-                        </div>
-                        <div>
-                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[1].parameter.parameterName }}°C~{{
-        tempThirtySixHrWeatherForecastData.weatherElement[4].time[1].parameter.parameterName }}°C
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="thirty-six-hr-forecast-item">
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].startTime.slice(11, 16) == '06:00'">
-                        明日白天</p>
-                    <p class="title"
-                        v-if="tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].startTime.slice(11, 16) == '18:00'">
-                        明日晚上</p>
-
-                    <p class="subtitle">{{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].startTime |
-                        onlyShowHour }} ~
-                        {{ tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].endTime | onlyShowHour }}</p>
-
-                    <img :src="weatherImgSwitch(tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].parameter.parameterValue)"
-                        alt="" class="weatherImg" :title="tempThirtySixHrWeatherForecastData.weatherElement[0].time[2].parameter.parameterName">
-
-                    <div class="TEMPPoPflexbox">
-                        <div>
-                            <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[1].time[2].parameter.parameterName }}%</p>
-                        </div>
-
-                        <div>
-                            <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
-                            <p>{{
-                                tempThirtySixHrWeatherForecastData.weatherElement[2].time[2].parameter.parameterName }}°C~{{
-        tempThirtySixHrWeatherForecastData.weatherElement[4].time[2].parameter.parameterName }}°C
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- week Forecast -->
-            <div class="weekForecast">
-                <div class="weekForecastItemHeader">
-                    <div class="headerdate">
-                        <img src="@/assets/weatherIcon/date.png" alt="" class="headerImg">
-                    </div>
-                    <div class="headerLine"></div>
-                    <div class="headertemp">
-                        <img src="@/assets/weatherIcon/sun.png" alt="" class="headerImg">
-                        <img src="@/assets/weatherIcon/moon.png" alt="" class="headerImg">
-                    </div>
-                </div>
-                <div class="weekForecastItem" v-for="item in 6" :key="item">
-                    <div class="date">
-                        <h5>{{ getWeek(item) }}</h5>
-                        <p v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
-                            {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 - 1].startTime | onlyShowDate
-                            }}</p>
-                        <p v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
-                            {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].startTime | onlyShowDate }}
+                    <div>
+                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                        <p>
+                            {{ temp36HrData.weatherElement[2].time[0].parameter.parameterName }}°C~
+                            {{ temp36HrData.weatherElement[4].time[0].parameter.parameterName }}°C
                         </p>
                     </div>
-                    <div class="line"></div>
-                    <div class="tempPart">
-                        <div class="day">
-                            <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2].elementValue[1].value)"
-                                alt="" class="weatherImg" :title="tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2].elementValue[0].value">
-                            <p
-                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
-                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 - 1].elementValue[0].value
-                                }}°C ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2 - 1].elementValue[0].value
-                                }}°C
-                            </p>
-                            <p
-                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
-                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C
-                                ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value
-                                }}°C
-                            </p>
-                        </div>
-                        <div class="night">
-                            <img :src="weatherImgSwitch(tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2 + 1].elementValue[1].value)"
-                                alt="" class="weatherImg" :title="tempWeeklyWeatherForecastData.weatherElement[6].time[item * 2 + 1].elementValue[0].value">
-                            <p
-                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '06:00'">
-                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2].elementValue[0].value }}°C
-                                ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2].elementValue[0].value
-                                }}°C
-                            </p>
-                            <p
-                                v-if="tempWeeklyWeatherForecastData.weatherElement[8].time[0].endTime.slice(11, 16) == '18:00'">
-                                {{ tempWeeklyWeatherForecastData.weatherElement[8].time[item * 2 +
-                                    1].elementValue[0].value }}°C ~
-                                {{ tempWeeklyWeatherForecastData.weatherElement[12].time[item * 2 +
-                                    1].elementValue[0].value }}°C
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
+                </div>
             </div>
+            <div class="thirtySixHrForecastItem">
+                <h2>
+                    {{ changeTitle(temp36HrData.weatherElement[0].time[1].startTime.slice(11, 16)) }}
+                </h2>
 
-            <!-- other Relevant Infomation : RH -->
-            <div class="relevantInfo">
-                <div class="relevantInfoText">
-                    <h2>相對溼度</h2>
-                    <h4>{{ tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value }} %</h4>
-                </div>
-                <div class="relevantRHInfo">
-                    <div class="RHCircle" id="RHCircle">
-                        <h2 v-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value == 0">無</h2>
-                        <h2
-                            v-else-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value <= 33 && tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value > 0">
-                            低</h2>
-                        <h2
-                            v-else-if="tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value <= 66 && tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value > 33">
-                            中</h2>
-                        <h2 v-else>高</h2>
+                <p>
+                    {{ temp36HrData.weatherElement[0].time[1].startTime | onlyShowHour }} ~
+                    {{ temp36HrData.weatherElement[0].time[1].endTime | onlyShowHour }}
+                </p>
+
+                <img :src="weatherImgSwitch(temp36HrData.weatherElement[0].time[1].parameter.parameterValue)" alt=""
+                    class="weatherImg" :title="temp36HrData.weatherElement[0].time[1].parameter.parameterName">
+
+                <div class="TEMPPoPflexbox">
+                    <div>
+                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                        <p>{{
+                            temp36HrData.weatherElement[1].time[1].parameter.parameterName }}%</p>
+                    </div>
+                    <div>
+                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                        <p>
+                            {{ temp36HrData.weatherElement[2].time[1].parameter.parameterName }}°C~
+                            {{ temp36HrData.weatherElement[4].time[1].parameter.parameterName }}°C
+                        </p>
                     </div>
                 </div>
             </div>
+            <div class="thirtySixHrForecastItem">
+                <h2>
+                    {{ changeTitle(temp36HrData.weatherElement[0].time[2].startTime.slice(11, 16)) }}
+                </h2>
 
-            <!-- other Relevant Infomation : Wind Speed -->
-            <div class="relevantInfo">
-                <div class="relevantInfoText">
-                    <h2>最大風速</h2>
-                    <h4>{{ tempWeeklyWeatherForecastData.weatherElement[4].time[0].elementValue[0].value }} m/s</h4>
+                <p>
+                    {{ temp36HrData.weatherElement[0].time[2].startTime | onlyShowHour }} ~
+                    {{ temp36HrData.weatherElement[0].time[2].endTime | onlyShowHour }}
+                </p>
+
+                <img :src="weatherImgSwitch(temp36HrData.weatherElement[0].time[2].parameter.parameterValue)" alt=""
+                    class="weatherImg" :title="temp36HrData.weatherElement[0].time[2].parameter.parameterName">
+
+                <div class="TEMPPoPflexbox">
+                    <div>
+                        <img src="@/assets/weatherIcon/umbrella.png" alt="" class="weatherIcon">
+                        <p>{{
+                            temp36HrData.weatherElement[1].time[2].parameter.parameterName }}%</p>
+                    </div>
+
+                    <div>
+                        <img src="@/assets/weatherIcon/temperature.png" alt="" class="weatherIcon">
+                        <p>
+                            {{ temp36HrData.weatherElement[2].time[2].parameter.parameterName }}°C~
+                            {{ temp36HrData.weatherElement[4].time[2].parameter.parameterName }}°C
+                        </p>
+                    </div>
+
                 </div>
-                <div class="relevantWDInfo relevantInfoImg">
-                    <img src="@/assets/weatherIcon/arrow.png" alt="" class="arrow" id="arrow">
-                    <p></p>
+            </div>
+        </div>
+
+        <div class="weekForecastHeader weekForecastDefault">
+            <div>
+                <img src="@/assets/weatherIcon/date.png" alt="">
+            </div>
+            <div></div>
+            <div>
+                <img src="@/assets/weatherIcon/sun.png" alt="">
+                <img src="@/assets/weatherIcon/moon.png" alt="">
+            </div>
+        </div>
+
+        <!-- week Forecast -->
+        <div class="weekForecastContainer">
+            <div class="weekForecastItem weekForecastDefault" v-for="item in 6" :key="item">
+                <div>
+                    <h5>{{ getWeek(item) }}</h5>
+                    <h5>
+                        {{ tempWeeklyData.weatherElement[8].time[item * 2 -
+                            switchWeeklyWeatherTime(tempWeeklyData.weatherElement[8].time[0].endTime)].startTime |
+                            onlyShowDate }}
+                    </h5>
+                </div>
+                <div class="weekForecastLine"></div>
+                <div>
+                    <div>
+                        <img :src="weatherImgSwitch(tempWeeklyData.weatherElement[6].time[item * 2].elementValue[1].value)"
+                            alt="" :title="tempWeeklyData.weatherElement[6].time[item * 2].elementValue[0].value"
+                            class="weatherImg">
+                        <p>
+                            {{ tempWeeklyData.weatherElement[8].time[item * 2 -
+                                switchWeeklyWeatherTime(tempWeeklyData.weatherElement[8].time[0].endTime)].elementValue[0].value
+                            }}°C
+                            ~
+                            {{ tempWeeklyData.weatherElement[12].time[item * 2 -
+                                switchWeeklyWeatherTime(tempWeeklyData.weatherElement[8].time[0].endTime)].elementValue[0].value
+                            }}°C
+                        </p>
+                    </div>
+                    <div>
+                        <img :src="weatherImgSwitch(tempWeeklyData.weatherElement[6].time[item * 2 + 1].elementValue[1].value)"
+                            alt="" :title="tempWeeklyData.weatherElement[6].time[item * 2 + 1].elementValue[0].value"
+                            class="weatherImg">
+                        <p>
+                            {{ tempWeeklyData.weatherElement[8].time[item * 2 -
+                                switchWeeklyWeatherTime(tempWeeklyData.weatherElement[8].time[0].endTime) +
+                                1].elementValue[0].value }}°C~
+                            {{ tempWeeklyData.weatherElement[12].time[item * 2 -
+                                switchWeeklyWeatherTime(tempWeeklyData.weatherElement[8].time[0].endTime) +
+                                1].elementValue[0].value }}°C
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <!-- other Relevant Infomation : CI -->
-            <div class="relevantInfo">
-                <div class="relevantInfoText">
-                    <h2>舒適度</h2>
-                    <h4>{{ tempWeeklyWeatherForecastData.weatherElement[3].time[0].elementValue[0].value }} ~ {{
-                        tempWeeklyWeatherForecastData.weatherElement[7].time[0].elementValue[0].value }}</h4>
+        </div>
+
+        <!-- other Relevant Infomation : RH -->
+        <div class="relevantInfo">
+            <div class="relevantInfoText">
+                <h2>相對溼度</h2>
+                <h4>{{ tempWeeklyData.weatherElement[2].time[0].elementValue[0].value }} %</h4>
+            </div>
+            <div class="relevantInfoImg">
+                <div class="RHCircle" id="RHCircle">
+                    <h2>無</h2>
                 </div>
-                <div class="relevantCIInfo relevantInfoImg">
-                    <div class="CIText" id="down">
-                        <p>{{ CIValue }}</p>
-                        <img src="@/assets/weatherIcon/down.png" alt="" class="down">
-                    </div>
-                    <div class="CIBar"></div>
+            </div>
+        </div>
+
+        <!-- other Relevant Infomation : Wind Speed -->
+        <div class="relevantInfo">
+            <div class="relevantInfoText">
+                <h2>最大風速</h2>
+                <h4>{{ tempWeeklyData.weatherElement[4].time[0].elementValue[0].value }} m/s</h4>
+            </div>
+            <div class="relevantInfoImg">
+                <img src="@/assets/weatherIcon/arrow.png" alt="" id="windDirectionarrow">
+                <p></p>
+            </div>
+        </div>
+
+        <!-- other Relevant Infomation : CI -->
+        <div class="relevantInfo">
+            <div class="relevantInfoText">
+                <h2>舒適度</h2>
+                <h4>{{ tempWeeklyData.weatherElement[3].time[0].elementValue[0].value }} ~ {{
+                    tempWeeklyData.weatherElement[7].time[0].elementValue[0].value }}</h4>
+            </div>
+            <div class="CIInfo relevantInfoImg">
+                <div id="CIDownArrow">
+                    <p>無資料</p>
+                    <img src="@/assets/weatherIcon/down.png" alt="" class="down">
                 </div>
+                <div class="CIBar"></div>
+            </div>
+        </div>
+
+        <!-- other Relevant Infomation : UV -->
+        <div class="relevantInfo">
+            <div class="relevantInfoText">
+                <h2>紫外線</h2>
+                <h4>{{ tempWeeklyData.weatherElement[9].time[0].elementValue[0].value }}</h4>
 
             </div>
-
-            <!-- other Relevant Infomation : UV -->
-            <div class="relevantInfo">
-                <div class="relevantInfoText">
-                    <h2>紫外線</h2>
-                    <h4>{{ tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[0].value }}</h4>
-
+            <div class="relevantUVInfo relevantInfoImg">
+                <div class="UVCircle">
+                    <h4 id="UVLevel"></h4>
                 </div>
-                <div class="relevantUVInfo relevantInfoImg">
-                    <div class="UVCircle">
-                        <h4 id="UVLevel">{{
-                            tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[1].value }}</h4>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -243,51 +212,69 @@
 
 
 <script>
-import cloud from "@/assets/weather/cloud.png";
-import clouds from "@/assets/weather/clouds.png";
-import cloudyDay from "@/assets/weather/cloudy-day.png";
-import fog from "@/assets/weather/fog.png";
-import rainDrops from "@/assets/weather/rain-drops.png";
-import raining from "@/assets/weather/raining.png";
-import snowing from "@/assets/weather/snowing.png";
-import storm from "@/assets/weather/storm.png";
-import sun from "@/assets/weather/sun.png";
-import wind from "@/assets/weather/wind.png";
-
 import $ from "jquery";
 
-export default ({
+export default {
     data() {
         return {
-            isLoading: false,
-            fullPage: true,
-
-            selectLocation: '桃園市',
-            CIValue:"",
+            selectLocation: "桃園市",
 
             weatherImg: {
-                cloud: cloud,
-                clouds: clouds,
-                cloudyDay: cloudyDay,
-                fog: fog,
-                rainDrops: rainDrops,
-                raining: raining,
-                snowing: snowing,
-                storm: storm,
-                sun: sun,
-                wind: wind,
-            }
+                cloud: require("@/assets/weather/cloud.png"),
+                clouds: require("@/assets/weather/clouds.png"),
+                cloudyDay: require("@/assets/weather/cloudy-day.png"),
+                fog: require("@/assets/weather/fog.png"),
+                rainDrops: require("@/assets/weather/rain-drops.png"),
+                raining: require("@/assets/weather/raining.png"),
+                snowing: require("@/assets/weather/snowing.png"),
+                storm: require("@/assets/weather/storm.png"),
+                sun: require("@/assets/weather/sun.png"),
+                wind: require("@/assets/weather/wind.png"),
+            },
         }
     },
     computed: {
-        tempThirtySixHrWeatherForecastData() {
-            return this.$store.state.tempThirtySixHrWeatherForecastData
+        temp36HrData() {
+            const weatherArray = this.$store.state.thirtySixHrWeatherForecastData
+
+            for (let i = 0; i < weatherArray.length; i++) {
+                if (weatherArray[i].locationName == this.selectLocation) {
+                    return weatherArray[i];
+                }
+            }
         },
-        tempWeeklyWeatherForecastData() {
-            return this.$store.state.tempWeeklyWeatherForecastData
+        tempWeeklyData() {
+            const weatherArray = this.$store.state.WeeklyWeatherForecastData
+
+            for (let i = 0; i < weatherArray.length; i++) {
+                if (weatherArray[i].locationName === this.selectLocation) {
+                    setTimeout(() => {
+                        this.RHCircle(weatherArray[i]);
+                        this.WDArrow(weatherArray[i]);
+                        this.CIBar(weatherArray[i]);
+                        this.UVLevelColor(weatherArray[i]);
+                        this.weatherImgFadeIn();
+                    }, 0)
+
+                    return weatherArray[i];
+                }
+            }
         }
     },
     methods: {
+        changeTitle(time, isToday = false) {
+            if (time == '06:00') {
+                if (isToday) {
+                    return '今天早上'
+                } else {
+                    return '明天早上'
+                }
+            } else if (time == '12:00') {
+                return '今日下午'
+            } else if (time == '18:00' || time == '00:00') {
+                return '今晚明晨'
+            }
+        },
         weatherImgSwitch(event) {
             if (event == 1) {
                 return this.weatherImg.sun
@@ -309,17 +296,29 @@ export default ({
                 return this.weatherImg.fog
             }
         },
-        RHCircle() {
-            const vm = this;
-            let RHValue = vm.tempWeeklyWeatherForecastData.weatherElement[2].time[0].elementValue[0].value;
+        switchWeeklyWeatherTime(time) {
+            if (time.slice(11, 16) == '06:00') {
+                return 1
+            } else {
+                return 0
+            }
+        },
+        RHCircle(weather) {
+            let RHValue = weather.weatherElement[2].time[0].elementValue[0].value;
 
             $('#RHCircle').css('--RHPercentage', `${RHValue}%`)
-        },
-        WDArrow() {
-            const vm = this;
 
+            if (RHValue <= 33 && RHValue > 0) {
+                $('#RHCircle > h2').text('低')
+            } else if (RHValue <= 66 && RHValue > 33) {
+                $('#RHCircle > h2').text('中')
+            } else if (RHValue > 66) {
+                $('#RHCircle > h2').text('高')
+            }
+        },
+        WDArrow(weather) {
             let WDValue = function () {
-                switch (vm.tempWeeklyWeatherForecastData.weatherElement[13].time[0].elementValue[0].value) {
+                switch (weather.weatherElement[13].time[0].elementValue[0].value) {
                     case "偏北風":
                         return 0;
                         break;
@@ -347,68 +346,68 @@ export default ({
                 }
             }
 
-            $("#arrow").animate({
+            $("#windDirectionarrow").animate({
                 rotate: `${WDValue()}deg`
             }, 500)
         },
-        CIBar() {
-            const vm = this;
-
-            const minValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[3].time[0].elementValue[0].value);
-            const maxValue = Number(vm.tempWeeklyWeatherForecastData.weatherElement[7].time[0].elementValue[0].value);
+        CIBar(weather) {
+            const minValue = Number(weather.weatherElement[3].time[0].elementValue[0].value);
+            const maxValue = Number(weather.weatherElement[7].time[0].elementValue[0].value);
 
             let CIValue = (minValue + maxValue) / 2;
 
-
             setTimeout(() => {
                 let clientWidth = document.querySelector('.CIBar').clientWidth;
-                console.log(clientWidth);
 
                 let changePixel = CIValue * (clientWidth / 40) - (clientWidth / 2);
-                $("#down").animate({
+                $("#CIDownArrow").animate({
                     left: `${changePixel}px`
                 }, 500)
             }, 1)
 
 
             if (CIValue <= 10) {
-                $("#down").css('color', 'rgb(89, 0, 255)')
-                vm.CIValue = "非常寒冷";
+                $("#CIDownArrow").css('color', 'rgb(89, 0, 255)')
+                $("#CIDownArrow > p").text('非常寒冷')
             } else if (CIValue > 10 && CIValue <= 15) {
-                $("#down").css('color', 'rgb(0, 153, 255)')
-                vm.CIValue = "寒冷";
+                $("#CIDownArrow").css('color', 'rgb(0, 153, 255)')
+                $("#CIDownArrow > p").text('寒冷')
             } else if (CIValue > 15 && CIValue <= 19) {
-                $("#down").css('color', 'rgb(0, 247, 255)')
-                vm.CIValue = "稍有寒意";
+                $("#CIDownArrow").css('color', 'rgb(0, 247, 255)')
+                $("#CIDownArrow > p").text('稍有寒意')
             } else if (CIValue > 19 && CIValue <= 26) {
-                $("#down").css('color', 'rgb(0, 255, 0)')
-                vm.CIValue = "舒適";
+                $("#CIDownArrow").css('color', 'rgb(0, 255, 0)')
+                $("#CIDownArrow > p").text('舒適')
             } else if (CIValue > 26 && CIValue <= 30) {
-                $("#down").css('color', 'orange')
-                vm.CIValue = "悶熱";
+                $("#CIDownArrow").css('color', 'orange')
+                $("#CIDownArrow > p").text('悶熱')
             } else if (CIValue > 30) {
-                $("#down").css('color', 'red')
-                vm.CIValue = "易中暑";
+                $("#CIDownArrow").css('color', 'red')
+                $("#CIDownArrow > p").text('易中暑')
             }
         },
-        UVLevelColor() {
-            const vm = this;
-            const UVValue = vm.tempWeeklyWeatherForecastData.weatherElement[9].time[0].elementValue[1].value;
+        UVLevelColor(weather) {
+            const UVValue = weather.weatherElement[9].time[0].elementValue[1].value;
             switch (UVValue) {
                 case "低量級":
                     $("#UVLevel").css('color', 'green')
+                    $("#UVLevel").text(UVValue)
                     break;
                 case "中量級":
                     $("#UVLevel").css('color', 'yellow')
+                    $("#UVLevel").text(UVValue)
                     break;
                 case "高量級":
                     $("#UVLevel").css('color', 'orange')
+                    $("#UVLevel").text(UVValue)
                     break;
                 case "過量級":
                     $("#UVLevel").css('color', 'red')
+                    $("#UVLevel").text(UVValue)
                     break;
                 case "危險級":
                     $("#UVLevel").css('color', 'purple')
+                    $("#UVLevel").text(UVValue)
                     break;
             }
         },
@@ -451,19 +450,6 @@ export default ({
             $('.weatherImg').hide(0).fadeIn(500);
         }
     },
-    watch: {
-        selectLocation() {
-            const vm = this;
-
-            vm.$store.dispatch('filterWeatherForecastData', vm.selectLocation)
-            vm.RHCircle();
-            vm.WDArrow();
-            vm.CIBar();
-            vm.UVLevelColor();
-
-            vm.weatherImgFadeIn();
-        },
-    },
     filters: {
         onlyShowHour(e) {
             return e.slice(11, 16)
@@ -472,49 +458,36 @@ export default ({
             return `${e.slice(5, 7)}/${e.slice(8, 10)}`
         }
     },
-    mounted() {
-        this.RHCircle();
-        this.WDArrow();
-        this.CIBar();
-        this.UVLevelColor();
-
-        this.weatherImgFadeIn();
-    }
-})
+}
 </script>
 
 
 <style scoped>
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-    font-family: '微軟正黑體';
-}
-
 h2 {
     font-size: 30px;
+    letter-spacing: 2px;
 }
 
 h4 {
     font-size: 24px;
 }
 
-.bg {
-    background-color: #FEFF86;
+h5 {
+    font-size: 20px;
 }
 
-.container {
+.weatherForecastContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto 47% 20% 20%;
+    grid-template-rows: 50px auto 1fr 1fr;
     gap: 2rem;
+    background-color: #FEFF86;
 
-    padding: 2rem 8rem;
+    padding: 4rem 10vw;
+}
+
+.weatherForecastContainer>* {
+    border-radius: 15px;
 }
 
 .locationSelectBarContainer {
@@ -523,191 +496,147 @@ h4 {
     gap: 30px;
 }
 
-.locationSelectBarContainer>.weatherTitleIcon {
+.locationSelectBarContainer>img {
     height: 50px;
+    margin: 0;
 }
 
-.locationSelectBarContainer>.locationSelectBar {
-    border: none;
-    width: 30%;
+.locationSelectBarContainer>select {
     font-size: 30px;
     letter-spacing: 10px;
     background-color: #FEFF86;
-
-    cursor: pointer;
 }
 
-.thirty-six-hr-forecast {
+.thirtySixHrForecastContainer,
+.relevantInfo {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-
     background-color: #146C94;
     padding: 2rem;
-    border-radius: 15px;
-
-    grid-column: span 2;
-
     color: #FEFF86;
+    letter-spacing: 1px;
 }
 
-.thirty-six-hr-forecast-item {
-    border-radius: 15px;
+.thirtySixHrForecastContainer {
+    grid-column: span 2;
+}
+
+.thirtySixHrForecastItem {
+    border-radius: inherit;
     background-color: #19A7CE;
-    text-align: center;
     padding: 2rem 1rem;
+    width: 30%;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.thirty-six-hr-forecast-item>.title {
-    font-weight: bolder;
-    font-size: 32px;
-    letter-spacing: 2px;
-}
-
-.thirty-six-hr-forecast-item>.subtitle {
-    font-size: 14px;
-    letter-spacing: 2px;
-}
-
-.thirty-six-hr-forecast-item>.weatherImg {
-    height: 100px;
-    margin: 2rem 0;
+.thirtySixHrForecastItem>.weatherImg {
+    width: 50%;
+    margin: 1vw 0;
 }
 
 .TEMPPoPflexbox {
     display: flex;
+    gap: 10px;
     flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 6px;
+    justify-content: center;
+    width: 100%;
 }
 
 .TEMPPoPflexbox>* {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
     gap: 5px;
+    letter-spacing: 0;
 }
 
-.TEMPPoPflexbox>div>p {
-    font-size: 17px;
-    font-weight: bold;
+.TEMPPoPflexbox .weatherIcon {
+    height: 24px;
 }
 
-.TEMPPoPflexbox>div>.weatherIcon {
-    height: 25px;
-}
-
-.weekForecast {
-    grid-area: 1/3/5/4;
+.weekForecastDefault {
     display: flex;
+    justify-content: space-between;
+    border: solid #146C94 3px;
+}
+
+.weekForecastDefault>div:nth-child(1) {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.weekForecastDefault>div:nth-child(2) {
+    width: 3px;
+    height: 100%;
+}
+
+.weekForecastDefault>div:nth-child(3) {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 75%;
+}
+
+.weekForecastHeader {
+    grid-area: 1/3/2/4;
+
+    background-color: #146C94;
+    padding: .5rem;
+}
+
+.weekForecastHeader>div:nth-child(2) {
+    background-color: #FEFF86;
+}
+
+.weekForecastHeader img {
+    height: 20px;
+}
+
+.weekForecastContainer {
+    grid-area: 2/3/5/4;
+    display: flex;
+    gap: 1rem;
     flex-direction: column;
     justify-content: space-between;
-    gap: 1rem;
 
     color: #146C94;
     font-weight: 900;
 }
 
-.weekForecast>.weekForecastItemHeader {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    height: 6%;
-
-    border: solid #146C94 3px;
-    background-color: #146C94;
-    border-radius: 10px;
-    padding: 10px 1rem;
+.weekForecastItem {
+    padding: 1rem .5rem;
+    border-radius: inherit;
 }
 
-.weekForecast>.weekForecastItemHeader>.headerdate {
-    width: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.weekForecast>.weekForecastItemHeader>.headerLine {
-    width: 3px;
-    height: 100%;
-    background-color: #FEFF86;
-}
-
-.weekForecast>.weekForecastItemHeader>.headertemp {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 75%;
-}
-
-.weekForecast>.weekForecastItemHeader>div>.headerImg {
-    height: 20px;
-}
-
-.weekForecast>.weekForecastItem {
-    height: 13%;
-    border: solid #146C94 3px;
-    border-radius: 15px;
-    padding: 1rem;
-
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.weekForecast>.weekForecastItem:hover {
+.weekForecastItem:hover {
     background-color: #146C94;
     color: #FEFF86;
 }
 
-.weekForecast>.weekForecastItem:hover .line {
+.weekForecastItem:hover .weekForecastLine {
     background-color: #FEFF86;
 }
 
-.weekForecast>.weekForecastItem>.date {
-    display: flex;
+.weekForecastItem>div:nth-child(1) {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 5px;
-
-    font-size: 20px;
 }
 
-.weekForecast>.weekForecastItem>.line {
+.weekForecastItem>div:nth-child(2) {
     background-color: #146C94;
-    height: 100%;
-    width: 3px;
 }
 
-.weekForecast>.weekForecastItem>.tempPart {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 75%;
-    text-align: center;
-}
-
-.weekForecast>.weekForecastItem>.tempPart>div>.weatherImg {
+.weekForecastItem img {
     height: 56px;
 }
 
-.weekForecast>.weekForecastItem>.tempPart>* {
-    padding: 0;
-}
-
-.relevantInfo {
-    background-color: #146C94;
-    border-radius: 15px;
-    padding: 2rem 1.5rem;
-    color: #FEFF86;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 10px;
-
-    letter-spacing: 2px;
+.relevantInfo>* {
+    width: 45%;
 }
 
 .relevantInfo>.relevantInfoText {
@@ -716,12 +645,13 @@ h4 {
     justify-content: space-around;
 }
 
-.relevantInfo>.relevantRHInfo {
+.relevantInfo>.relevantInfoImg {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.relevantInfo>div>.RHCircle {
+.relevantInfo .RHCircle {
     height: 100%;
     aspect-ratio: 1;
     position: relative;
@@ -730,7 +660,7 @@ h4 {
     align-items: center;
 }
 
-.relevantInfo>div>.RHCircle::before {
+.relevantInfo .RHCircle::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -740,23 +670,17 @@ h4 {
     mask: radial-gradient(farthest-side, #0000 80%, #000 20%);
 }
 
-.relevantInfo>.relevantInfoImg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.relevantInfo>.relevantInfoImg>.arrow {
-    height: 5rem;
+#windDirectionarrow {
+    width: 75%;
     transform: rotate(0deg);
 }
 
-.relevantInfo>.relevantCIInfo {
+.CIInfo {
     gap: 10px;
     flex-direction: column;
 }
 
-.relevantInfo>.relevantCIInfo>.CIText {
+#CIDownArrow {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -766,11 +690,11 @@ h4 {
     left: 0px;
 }
 
-.relevantInfo>.relevantCIInfo>.CIText>.down {
+#CIDownArrow>img {
     width: 20px;
 }
 
-.relevantInfo>.relevantCIInfo>.CIBar {
+.CIBar {
     background: linear-gradient(to right, rgb(38, 0, 128), blue, rgb(0, 128, 128), green, yellow, red);
     width: 100%;
     height: 15px;
@@ -798,16 +722,31 @@ h4 {
 
 #UVLevel {
     color: white;
-    transition-duration: 1s;
+    transition: color 1s 0s;
 }
 
 
 @media (max-width:991px) {
-    .container {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
+    h2 {
+        font-size: 24px;
+        letter-spacing: 0px;
+    }
 
-        padding: 2rem 2rem;
+    h4 {
+        font-size: 18px;
+    }
+
+    h5 {
+        font-size: 16px;
+    }
+    p{
+        font-size: 14px;
+    }
+
+    .weatherForecastContainer {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto 1fr 1fr;
+        gap: 1rem;
     }
 
     .locationSelectBarContainer {
@@ -816,15 +755,18 @@ h4 {
         gap: 10px;
     }
 
-    .locationSelectBarContainer>.locationSelectBar{
+    .locationSelectBarContainer>select {
         width: 50%;
     }
 
-    .thirty-six-hr-forecast {
-        grid-column: span 2;
+    .thirtySixHrForecastContainer {
+        padding: 1rem;
+    }
+    .thirtySixHrForecastContainer > *{
+        width: 32%;
     }
 
-    .thirty-six-hr-forecast-item>.weatherImg {
+    .thirtySixHrForecastItem>.weatherImg {
         height: auto;
         width: 100%;
         margin: 0;
@@ -836,42 +778,37 @@ h4 {
         align-items: center;
     }
 
-    .TEMPPoPflexbox>p {
-        font-size: 20px;
-    }
-
-    .weekForecast {
+    .weekForecastHeader {
+        grid-column: span 2;
         grid-area: 5/1/6/3;
     }
 
-    .weekForecast>.weekForecastItemHeader>.headerdate {
-        width: 80px;
+    .weekForecastContainer {
+        grid-area: 6/1/7/3;
+        gap: 1rem;
     }
 
-    .weekForecast>.weekForecastItem>.date {
-        font-size: 28px;
-    }
-
-    .weekForecast>.weekForecastItem>.tempPart>div>.weatherImg {
-        height: 120px;
-    }
-
-    .weekForecast>.weekForecastItem>.tempPart>*>p {
-        font-size: 22px;
+    .weekForecastItem img {
+        height: 90px;
     }
 
     .relevantInfo {
-        height: 120px;
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+
+    .relevantInfo>* {
+        width: 50%;
+    }
+
+    .RHCircle , .UVCircle{
+        height: auto;
+        width: 100%;
     }
 }
-@media (max-width:516px){
-    h2{
-        font-size: 24px;
+
+@media (max-width:1235px) {
+    .weatherForecastContainer {
+        padding: 2rem 5vw;
     }
-    h4{
-        font-size: 20px;
-    }
-}
-</style>
+}</style>
 

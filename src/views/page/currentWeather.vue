@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div class="flex-box">
-
+        <div class="currentWeatherContianer">
             <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud1 left">
             <img src="@/assets/bg-clouds/background-cloud-3.png" alt="bg-clouds" class="bg-clouds cloud2 right">
             <img src="@/assets/bg-clouds/background-cloud-1.png" alt="bg-clouds" class="bg-clouds cloud3 left">
@@ -12,40 +11,36 @@
             <img src="@/assets/bg-clouds/background-cloud-4.png" alt="bg-clouds" class="bg-clouds cloud8 right">
 
             <div class="TaiwanContainer">
-                <img src="../../assets/Taiwan.png" alt="" class="Taiwan-img">
-                <button class="location" @click="changeLocation(item.locationName)" v-for="item in currentWeatherAlert"
-                    :key="item.geocode" :class="filterPositionOfLocationButton(item.locationName)">
+                <img src="@/assets/Taiwan.png" alt="" class="Taiwan-img">
+                <button class="location" @click="changeCity(item.locationName)" v-for="item in currentWeatherAlert"
+                    :key="item.geocode" :class="switchLocationNameToEn(item.locationName)">
                     <img src="@/assets/weatherIcon/waring.png" alt="" class="waringIcon"
                         :title="`${item.hazardConditions.hazards[0].info.significance} : ${item.hazardConditions.hazards[0].info.phenomena}`"
-                        v-if="currentWeatherAlertLocation.indexOf(item.locationName) != -1">
+                        v-if="item.hazardConditions.hazards[0]">
                     <p>{{ item.locationName }}</p>
                 </button>
             </div>
-
         </div>
-        <div class="table-bg" v-if="selectLocation">
-            <div class="table-div">
-                <select v-model="selectFilterLocation">
+        <div class="detailTableContainer" v-if="filterByCity">
+            <div>
+                <h2>觀測日期 : {{ getDate() }}</h2>
+                <select v-model="filterByTown">
                     <option value="">全部地區</option>
-                    <option :value="item" v-for="item in filterLocations" :key="item">{{ item }}</option>
+                    <option :value="item" v-for="item in townSelectBarData" :key="item">{{ item }}</option>
                 </select>
                 <table>
                     <thead>
-                        <th><p>縣市</p></th>
                         <th><p>鄉鎮市</p></th>
                         <th><p>測站名稱</p></th>
-                        <th><p>觀測時間<br>({{ getDate() }})</p></th>
+                        <th><p>觀測時間</p></th>
                         <th><p>溫度</p></th>
                         <th><p>相對溼度</p></th>
                         <th><p>風速</p></th>
                         <th><p>風向</p></th>
                         <th><p>天氣</p></th>
                     </thead>
-                    <tbody v-for="item in showingData" :key="item.lat">
-                        <tr>
-                            <td>
-                                <p>{{ item.parameter[0].parameterValue }}</p>
-                            </td>
+                    <tbody>
+                        <tr v-for="item in showingData" :key="item.lat">
                             <td>
                                 <p>{{ item.parameter[2].parameterValue }}</p>
                             </td>
@@ -86,48 +81,32 @@
 
 <script>
 import $ from "jquery";
-
-import cloud from "@/assets/weather/cloud.png";
-import clouds from "@/assets/weather/clouds.png";
-import cloudyDay from "@/assets/weather/cloudy-day.png";
-import fog from "@/assets/weather/fog.png";
-import rainDrops from "@/assets/weather/rain-drops.png";
-import raining from "@/assets/weather/raining.png";
-import snowing from "@/assets/weather/snowing.png";
-import storm from "@/assets/weather/storm.png";
-import sun from "@/assets/weather/sun.png";
-import wind from "@/assets/weather/wind.png";
-
 export default {
     data() {
         return {
-            selectLocation: '',
-            filterData: [],
-            filterLocations: [],
-
-            selectFilterLocation: '',
-            filterDataByLocation: [],
-
+            townSelectBarData: [],
             showingData: [],
 
+            filterByCity: '',
+            CityData: [],
+            filterByTown: '',
+            TownData: [],
+
             weatherImg: {
-                cloud: cloud,
-                clouds: clouds,
-                cloudyDay: cloudyDay,
-                fog: fog,
-                rainDrops: rainDrops,
-                raining: raining,
-                snowing: snowing,
-                storm: storm,
-                sun: sun,
-                wind: wind,
+                cloud: require("@/assets/weather/cloud.png"),
+                clouds: require("@/assets/weather/clouds.png"),
+                cloudyDay: require("@/assets/weather/cloudy-day.png"),
+                fog: require("@/assets/weather/fog.png"),
+                rainDrops: require("@/assets/weather/rain-drops.png"),
+                raining: require("@/assets/weather/raining.png"),
+                snowing: require("@/assets/weather/snowing.png"),
+                storm: require("@/assets/weather/storm.png"),
+                sun: require("@/assets/weather/sun.png"),
+                wind: require("@/assets/weather/wind.png"),
             }
         }
     },
     computed: {
-        currentWeatherAlertLocation() {
-            return this.$store.state.currentWeatherAlertLocation
-        },
         currentWeatherAlert() {
             return this.$store.state.currentWeatherAlert
         },
@@ -153,8 +132,6 @@ export default {
             let months = date.getMonth() + 1
             let days = date.getDate()
             let week = date.getDay()
-
-            console.log(week);
 
             let chinessNum = function () {
                 switch (week) {
@@ -184,7 +161,7 @@ export default {
 
             return `${months}月${days}日 星期${chinessNum()}`
         },
-        filterPositionOfLocationButton(location) {
+        switchLocationNameToEn(location) {
             switch (location) {
                 case "基隆市":
                     return 'Keelung'
@@ -254,48 +231,48 @@ export default {
                     break;
             }
         },
-        changeLocation(location) {
-            this.selectLocation = location
+        changeCity(location) {
+            this.filterByCity = location
         }
     },
     watch: {
-        selectLocation() {
+        filterByCity(value) {
             const vm = this;
-            vm.filterData = [];
-            vm.filterLocations = [];
+            vm.CityData = [];
+            vm.townSelectBarData = [];
 
             vm.$store.state.currentWeatherData.forEach((item) => {
-                if (vm.selectLocation == item.parameter[0].parameterValue) {
-                    vm.filterData.push(item)
+                if (value == item.parameter[0].parameterValue) {
+                    vm.CityData.push(item)
                 }
             })
-            vm.showingData = vm.filterData;
+            vm.showingData = vm.CityData;
 
             const location = new Set();
-            vm.filterData.forEach((item) => {
+            vm.CityData.forEach((item) => {
                 location.add(item.parameter[2].parameterValue);
             })
-            vm.filterLocations = Array.from(location);
+            vm.townSelectBarData = Array.from(location);
 
             setTimeout(() => {
                 $("html").animate({
-                    scrollTop: document.querySelector('.flex-box').offsetHeight + document.querySelector('.container').offsetHeight 
+                    scrollTop: document.querySelector('.currentWeatherContianer').offsetHeight + document.querySelector('.container').offsetHeight 
                 }, 500)
             }, 10);
         },
-        selectFilterLocation() {
+        filterByTown(value) {
             const vm = this;
-            vm.filterDataByLocation = [];
+            vm.TownData = [];
 
-            vm.filterData.forEach((item) => {
-                if (item.parameter[2].parameterValue == vm.selectFilterLocation) {
-                    vm.filterDataByLocation.push(item)
+            vm.CityData.forEach((item) => {
+                if (item.parameter[2].parameterValue == value) {
+                    vm.TownData.push(item)
                 }
             })
-            if (vm.selectFilterLocation) {
-                vm.showingData = vm.filterDataByLocation;
+            if (value) {
+                vm.showingData = vm.TownData;
             } else {
-                vm.showingData = vm.filterData;
+                vm.showingData = vm.CityData;
             }
         },
 
@@ -348,7 +325,7 @@ export default {
             }
         },
         onlyShowHour(e) {
-            return e.slice(11)
+            return e.slice(11 , 16)
         }
     },
     mounted() {
@@ -363,24 +340,12 @@ export default {
 </script>
 
 <style scoped>
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-    font-family: '微軟正黑體';
-}
-
 p {
     font-size: 16px;
     font-weight: bold;
 }
 
-
-.flex-box {
+.currentWeatherContianer {
     display: flex;
     justify-content: center;
     position: relative;
@@ -394,14 +359,13 @@ p {
 }
 
 .Taiwan-img {
-    position: relative;
     height: 680px;
 }
 
 .location {
     position: absolute;
 
-    width: 90px;
+    width: 100px;
     border-radius: 8px;
     border: solid 2px #146C94;
     color: #146C94;
@@ -416,8 +380,6 @@ p {
     background-color: #146C94;
     color: #B0DAFF;
     transition-duration: 0.1s;
-
-    cursor: pointer;
 }
 
 
@@ -590,20 +552,29 @@ p {
     top: 100px;
 }
 
-.table-bg {
+.detailTableContainer {
     background: linear-gradient(#B0DAFF, #FEFF86);
     position: relative;
-    padding: 3rem 20%;
+    padding: 4rem 20%;
 }
 
-.table-div {
+.detailTableContainer > div {
     background: linear-gradient(#FEFF86, #B0DAFF);
     border-radius: 20px;
     padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.weatherImg {
-    height: 60px;
+select {
+    text-align: center;
+    margin: 2rem 0;
+    padding: .5rem 0;
+    background-color: #146C94;
+    color: white;
+    font-size: 16px;
 }
 
 .missingData {
@@ -612,55 +583,50 @@ p {
 }
 
 table {
-    margin: 0 auto;
     border-collapse: collapse;
-}
-
-select {
-    text-align: center;
-    margin: 1rem 25%;
-    width: 50%;
-    padding: 0.5rem 0;
-    border: none;
-    border-radius: 5px;
-    background-color: #146C94;
-    color: white;
-
-    font-size: 16px;
-    font-weight: bold;
+    width: 100%;
 }
 
 th,
 td {
-    padding: 0.4rem 0.2rem;
     border-bottom: solid 3px #146C94;
     text-align: center;
+    vertical-align: middle;
     letter-spacing: 1px;
+}
+th{
+    padding: 1rem 0;
+}
 
-    width: 80px;
-    height: 60px;
+tr:last-child > td{
+    border: none;
+}
+table img {
+    height: 80px;
 }
 
 @media (max-width:991px) {
     .Taiwan-img {
         display: none;
     }
-
     .bg-clouds {
         display: none;
     }
 
-    .TaiwanContainer {
+    .TaiwanContainer{
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 1rem;
+        padding: 1rem;
     }
-
     .location {
         position: static;
         width: 200px;
         height: 90px;
+    }
+    .location > p {
+        font-size: 30px;
     }
 
     .Keelung {
@@ -751,12 +717,12 @@ td {
         order: 22;
     }
 
-    .table-bg{
-        padding: 2rem 1.5rem;
+    .detailTableContainer{
+        padding: 2rem 5%;
     }
-    th > p , td > p{
-        font-size: 14px;
-        font-weight: normal;
-        letter-spacing: 0;
+
+    th:nth-child(6) , th:nth-child(7),
+    td:nth-child(6) , td:nth-child(7){
+        display: none;
     }
 }</style>
