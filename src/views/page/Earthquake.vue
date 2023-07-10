@@ -230,20 +230,13 @@ tr:hover .infoTd {
 }
 
 @media (max-width:790px){
-  .taiwanImg{
-    width: 300px;
+  .taiwanImgContainer{
+    display: none;
   }
-  p{
-    font-size: 14px;
+  .infoTable{
+    width: 90%;
   }
-  th:nth-child(2),th:nth-child(1){
-    min-width: 0;
-  }
-  .arrow {
-    height: 20px;
-    transform: rotate(90deg);
-  }
-  th:nth-child(5) , td:nth-child(5){
+  th:nth-child(1) , td:nth-child(1) {
     display: none;
   }
 }
