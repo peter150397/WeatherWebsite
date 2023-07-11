@@ -233,6 +233,9 @@ tr:hover .infoTd {
 }
 
 @media (max-width:790px){
+  p{
+    font-size: 12px;
+  }
   .taiwanImgContainer{
     display: none;
   }
