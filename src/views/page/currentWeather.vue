@@ -385,6 +385,7 @@ p {
 
 .waringIcon {
     height: 24px;
+    margin: 0;
 }
 
 .bg-clouds {
