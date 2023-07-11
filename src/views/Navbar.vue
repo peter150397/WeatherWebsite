@@ -47,11 +47,6 @@ export default {
             $('.burgerBarLinkContainer').slideToggle(500)
         }
     },
-    // mounted() {
-    //     $('.burgerBarImg').click(function () {
-    //         $('.burgerBarLinkContainer').slideToggle(500)
-    //     })
-    // }
 }
 </script>
 
@@ -144,6 +139,7 @@ a {
 
     h1{
         padding: 20px 56px;
+        letter-spacing: 10px;
     }
 }
 

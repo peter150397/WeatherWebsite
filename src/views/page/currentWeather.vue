@@ -30,14 +30,30 @@
                 </select>
                 <table>
                     <thead>
-                        <th><p>鄉鎮市</p></th>
-                        <th><p>測站名稱</p></th>
-                        <th><p>觀測時間</p></th>
-                        <th><p>溫度</p></th>
-                        <th><p>相對溼度</p></th>
-                        <th><p>風速</p></th>
-                        <th><p>風向</p></th>
-                        <th><p>天氣</p></th>
+                        <th>
+                            <p>鄉鎮市</p>
+                        </th>
+                        <th>
+                            <p>測站名稱</p>
+                        </th>
+                        <th>
+                            <p>觀測時間</p>
+                        </th>
+                        <th>
+                            <p>溫度</p>
+                        </th>
+                        <th>
+                            <p>相對溼度</p>
+                        </th>
+                        <th>
+                            <p>風速</p>
+                        </th>
+                        <th>
+                            <p>風向</p>
+                        </th>
+                        <th>
+                            <p>天氣</p>
+                        </th>
                     </thead>
                     <tbody>
                         <tr v-for="item in showingData" :key="item.lat">
@@ -256,7 +272,7 @@ export default {
 
             setTimeout(() => {
                 $("html").animate({
-                    scrollTop: document.querySelector('.currentWeatherContianer').offsetHeight + document.querySelector('.container').offsetHeight 
+                    scrollTop: document.querySelector('.currentWeatherContianer').offsetHeight + document.querySelector('.container').offsetHeight
                 }, 500)
             }, 10);
         },
@@ -325,7 +341,7 @@ export default {
             }
         },
         onlyShowHour(e) {
-            return e.slice(11 , 16)
+            return e.slice(11, 16)
         }
     },
     mounted() {
@@ -559,7 +575,7 @@ p {
     padding: 4rem 20%;
 }
 
-.detailTableContainer > div {
+.detailTableContainer>div {
     background: linear-gradient(#FEFF86, #B0DAFF);
     border-radius: 20px;
     padding: 2rem;
@@ -595,39 +611,51 @@ td {
     vertical-align: middle;
     letter-spacing: 1px;
 }
-th{
+
+th {
     padding: 1rem 0;
 }
 
-tr:last-child > td{
+tr:last-child>td {
     border: none;
 }
+
 table img {
-    height: 80px;
+    max-width: 80px;
+    width: 100%;
 }
 
 @media (max-width:991px) {
     .Taiwan-img {
         display: none;
     }
+
     .bg-clouds {
         display: none;
     }
 
-    .TaiwanContainer{
+    .TaiwanContainer {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         gap: 1rem;
         padding: 1rem;
     }
+
     .location {
         position: static;
-        width: 200px;
-        height: 90px;
+        max-width: 200px;
+        width: 40%;
+        aspect-ratio: 16/9;
     }
-    .location > p {
+
+    .location>p {
         font-size: 30px;
+    }
+
+    .waringIcon {
+        height: 36px;
+        margin: 0;
     }
 
     .Keelung {
@@ -718,12 +746,24 @@ table img {
         order: 22;
     }
 
-    .detailTableContainer{
+    .detailTableContainer {
         padding: 2rem 5%;
     }
+    table p {
+        font-size: 12px;
+    }
 
-    th:nth-child(6) , th:nth-child(7),
-    td:nth-child(6) , td:nth-child(7){
+    th:nth-child(6),
+    th:nth-child(7),
+    td:nth-child(6),
+    td:nth-child(7) {
         display: none;
     }
-}</style>
+}
+
+@media (max-width:447px){
+    .location>p{
+        font-size: 6vw;
+    }
+}
+</style>

@@ -476,6 +476,10 @@ h5 {
     font-size: 20px;
 }
 
+p{
+    text-align: center;
+}
+
 .weatherForecastContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -642,7 +646,7 @@ h5 {
 .relevantInfo>.relevantInfoText {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .relevantInfo>.relevantInfoImg {
@@ -651,7 +655,7 @@ h5 {
     align-items: center;
 }
 
-.relevantInfo .RHCircle {
+.RHCircle {
     height: 100%;
     aspect-ratio: 1;
     position: relative;
@@ -700,7 +704,7 @@ h5 {
     height: 15px;
 }
 
-.relevantInfo>.relevantInfoImg>.UVCircle {
+.UVCircle {
     height: 100%;
     aspect-ratio: 1;
     position: relative;
@@ -728,19 +732,19 @@ h5 {
 
 @media (max-width:991px) {
     h2 {
-        font-size: 24px;
+        font-size: 4vw;
         letter-spacing: 0px;
     }
 
     h4 {
-        font-size: 18px;
+        font-size: 3.5vw;
     }
 
     h5 {
-        font-size: 16px;
+        font-size: 4vw;
     }
     p{
-        font-size: 14px;
+        font-size: 2vw;
     }
 
     .weatherForecastContainer {
@@ -755,15 +759,13 @@ h5 {
         gap: 10px;
     }
 
-    .locationSelectBarContainer>select {
-        width: 50%;
-    }
-
     .thirtySixHrForecastContainer {
         padding: 1rem;
     }
     .thirtySixHrForecastContainer > *{
         width: 32%;
+        padding: 1rem;
+        gap: 10px;
     }
 
     .thirtySixHrForecastItem>.weatherImg {

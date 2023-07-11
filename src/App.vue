@@ -59,4 +59,10 @@ select{
 select:focus-visible {
   outline: none;
 }
+
+@media (max-width:991px){
+  select{
+    width: 100%;
+  }
+}
 </style>
